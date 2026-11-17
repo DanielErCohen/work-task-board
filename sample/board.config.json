@@ -1,0 +1,16 @@
+{
+  "tasks": "tasks.md",
+  "summaries": "summaries",
+  "out": "board/out/docs",
+  "state": "state",
+  "link_roots": [
+    "meetings"
+  ],
+  "link_base": "",
+  "sweeps": true,
+  "sweep_hours": [
+    8,
+    14
+  ],
+  "weekly_review": true
+}

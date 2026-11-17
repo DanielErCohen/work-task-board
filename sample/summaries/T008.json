@@ -1,0 +1,16 @@
+{
+ "id": "T008",
+ "description": "Move the release notes to an in-app changelog and close the old notes page.",
+ "decision": {
+  "date": "2026-03-06",
+  "kind": "update",
+  "source": "Mira",
+  "text": "46 release notes moved, the first changelog entry tested, the old notes page closed.",
+  "url": ""
+ },
+ "details": [
+  "Numbers: 46 release notes moved.",
+  "Background: the export of the old notes finished on 2026-02-27."
+ ],
+ "notesHash": "8e8c5424075b"
+}

@@ -1,0 +1,15 @@
+{
+ "mail_inbox_query": "in:inbox -category:promotions",
+ "mail_sent_query": "in:sent",
+ "chat": [
+  {
+   "name": "engineering channel",
+   "id": "CHANNEL_ID_HERE"
+  },
+  {
+   "name": "direct messages with your manager",
+   "id": "CONVERSATION_ID_HERE"
+  }
+ ],
+ "max_items_per_sweep": 6
+}

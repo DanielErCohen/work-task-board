@@ -1,0 +1,16 @@
+{
+ "id": "T007",
+ "description": "Rewrite the spec for the onboarding checklist in plain words. Done means the new spec is approved and the three most common setup questions are answered in it.",
+ "decision": {
+  "date": "2026-03-02",
+  "kind": "decision",
+  "source": "Mira",
+  "text": "Parked until online rescheduling is out; the restart date is 2026-04-07.",
+  "url": ""
+ },
+ "details": [
+  "Next: restart on 2026-04-07, the due date.",
+  "Background: a draft of the new wording exists in drafts/onboarding-checklist.md."
+ ],
+ "notesHash": "cfb5a97c56d9"
+}

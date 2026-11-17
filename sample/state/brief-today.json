@@ -1,0 +1,152 @@
+{
+ "date": "2026-03-10",
+ "generatedAt": "2026-03-10T07:46:00Z",
+ "note": "The weekly with Otto Penhallow is today at 14:00, and the monthly metrics he asked for are a day late.",
+ "top": [
+  {
+   "taskId": "T010",
+   "title": "Prepare the monthly product metrics for Otto",
+   "whyShort": "A day late, weekly at 14:00",
+   "nextShort": "Pull three figures; Claude drafts the page",
+   "why": "Otto Penhallow asked for the page before the weekly, which is today at 14:00, and the due date was 2026-03-09.",
+   "next": "Pull activation, retention and no-show rate from the analytics export; Claude can draft the page once you paste the three figures."
+  },
+  {
+   "taskId": "T003",
+   "title": "Fix reminder texts that go out an hour late after the clock change",
+   "whyShort": "Due tomorrow, costs missed appointments",
+   "nextShort": "Ilya ships the fix; you test",
+   "why": "Each affected clinic loses about 3 appointments a week and the fix is due on 2026-03-11.",
+   "next": "Ilya Quince ships the fix; you check the three clinic time zones in staging."
+  },
+  {
+   "taskId": "T002",
+   "title": "Launch online rescheduling",
+   "whyShort": "Critical, launch in three days",
+   "nextShort": "Default setting, then two test reschedules",
+   "why": "The launch is on 2026-03-13 and the default setting for new clinics still has rescheduling switched off.",
+   "next": "Ilya Quince fixes the default; you test one reschedule on a phone and one on a laptop."
+  }
+ ],
+ "people": [
+  {
+   "name": "Bea Larkspur",
+   "meeting": "Design check-in, Bea and Mira",
+   "when": "today, 09:30",
+   "owe": [
+    {
+     "short": "Answer on the staging login",
+     "text": "She reported the broken login on 2026-03-09 and has no reply yet.",
+     "confirm": true
+    }
+   ],
+   "ask": [
+    {
+     "short": "Support guide timing",
+     "text": "Ask when on 2026-03-12 the clinic support guide is ready, so the rollout can be planned.",
+     "taskId": "T002"
+    }
+   ],
+   "decide": [
+    {
+     "short": "Morning for the usability test",
+     "text": "Three mornings are free on both calendars; the first is 2026-03-16.",
+     "taskId": "T004",
+     "confirm": true
+    },
+    {
+     "short": "Test the clinic admin view separately?",
+     "text": "Open since 2026-03-05.",
+     "taskId": "T004"
+    }
+   ],
+   "start": "09:30",
+   "end": "10:00"
+  },
+  {
+   "name": "Ilya Quince",
+   "meeting": "Booking flow walk-through",
+   "start": "11:00",
+   "end": "11:30",
+   "when": "today, 11:00",
+   "owe": [],
+   "ask": [],
+   "decide": []
+  },
+  {
+   "name": "Otto Penhallow",
+   "meeting": "Weekly, Otto and Mira",
+   "when": "today, 14:00",
+   "owe": [
+    {
+     "short": "Monthly metrics, one page",
+     "text": "Promised on 2026-03-02 for before this weekly; not started.",
+     "taskId": "T010"
+    },
+    {
+     "short": "Provider offers side by side",
+     "text": "He wants the comparison of the two Tinfold offers before he signs; due 2026-03-11.",
+     "taskId": "T001"
+    }
+   ],
+   "ask": [
+    {
+     "short": "Sign-off limit for the contract",
+     "text": "Ask how much he signs himself before a two-year term needs a second signature.",
+     "taskId": "T001"
+    }
+   ],
+   "decide": [
+    {
+     "short": "One-year or two-year term",
+     "text": "0.045 per message for one year against 0.041 for two; the price review question is still open with Tinfold.",
+     "taskId": "T001",
+     "confirm": true
+    }
+   ],
+   "start": "14:00",
+   "end": "14:45"
+  }
+ ],
+ "dayDate": "2026-03-10",
+ "reminders": [
+  "The monthly metrics Otto Penhallow asked for are a day late; the weekly is at 14:00.",
+  "Three meetings today; the morning after 11:30 is free."
+ ],
+ "deadlines": [
+  {
+   "date": "2026-03-11",
+   "title": "Reminder fix goes live",
+   "yours": [
+    {
+     "text": "Check the three clinic time zones in staging",
+     "taskId": "T003"
+    }
+   ],
+   "waiting": [
+    {
+     "who": "Ilya Quince",
+     "text": "ships the fix",
+     "taskId": "T003"
+    }
+   ]
+  },
+  {
+   "date": "2026-03-13",
+   "title": "Online rescheduling launch",
+   "yours": [
+    {
+     "text": "Two test reschedules, one on a phone and one on a laptop",
+     "taskId": "T002"
+    }
+   ],
+   "waiting": [
+    {
+     "who": "Ilya Quince",
+     "text": "the default setting fix",
+     "taskId": "T002"
+    }
+   ]
+  }
+ ]
+}

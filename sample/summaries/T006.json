@@ -1,0 +1,16 @@
+{
+ "id": "T006",
+ "description": "Get the corrected churn export from the data team. Done means the export matches the dashboard and Noor Fennimore has signed it off.",
+ "decision": {
+  "date": "2026-03-03",
+  "kind": "update",
+  "source": "Mail from Noor Fennimore",
+  "text": "The churn export lists 6,200 accounts and the dashboard says 5,700; Noor asked the data team for a corrected export.",
+  "url": ""
+ },
+ "details": [
+  "Waiting on: the data team's reply to Noor Fennimore.",
+  "Numbers: 500 accounts differ between export and dashboard."
+ ],
+ "notesHash": "85e12dae3ace"
+}

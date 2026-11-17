@@ -1,0 +1,16 @@
+{
+ "id": "T003",
+ "description": "Send reminder texts at the right time after the clock change. Done means all three clinic time zones get on-time reminders in staging and in one live clinic.",
+ "decision": {
+  "date": "2026-03-09",
+  "kind": "update",
+  "source": "Clinic report forwarded by Bea Larkspur",
+  "text": "Three clinics saw reminders arrive an hour late after the clock change; the reminder job uses a fixed time offset.",
+  "url": ""
+ },
+ "details": [
+  "Next: Ilya Quince ships the fix and Mira checks the three clinic time zones in staging.",
+  "Numbers: about 3 missed appointments per affected clinic a week; three clinics reported on 2026-03-09 and one on 2026-03-06."
+ ],
+ "notesHash": "fd82c45168af"
+}

@@ -1,0 +1,19 @@
+{
+ "id": "T001",
+ "description": "Choose the SMS provider for appointment reminders before the current contract ends on 2026-03-31. Done means a signed contract with a price and a term Otto Penhallow approved.",
+ "decision": {
+  "date": "2026-03-09",
+  "kind": "update",
+  "source": "Call with Gus Pemberton",
+  "text": "Tinfold offered 0.041 per message for two years or 0.045 for one year, both with free setup of the sender name.",
+  "url": ""
+ },
+ "details": [
+  "Next: Mira sends Otto Penhallow the one-page comparison by 2026-03-11.",
+  "Open: whether the two-year term allows a price review after twelve months.",
+  "Waiting on: Gus Pemberton, for the answer on the price review.",
+  "Numbers: 0.046 per message in the first offer, 0.045 for one year, 0.041 for two years.",
+  "Background: Otto asked for at least two quotes on 2026-03-02."
+ ],
+ "notesHash": "31cb22ea1c28"
+}

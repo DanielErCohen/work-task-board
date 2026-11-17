@@ -1,0 +1,17 @@
+{
+ "id": "T002",
+ "description": "Launch online rescheduling on 2026-03-13 with the release email to clinics. Done means patients can reschedule on phone and laptop and the first batch of 240 patients is live.",
+ "decision": {
+  "date": "2026-03-04",
+  "kind": "decision",
+  "source": "Planning note",
+  "text": "Six pilot clinics, 240 patients in the first batch, launch on 2026-03-13 with the release email to clinics.",
+  "url": ""
+ },
+ "details": [
+  "Next: Ilya Quince fixes the default setting, then Mira tests one reschedule on a phone and one on a laptop.",
+  "Risk: the clinic support guide is ready on 2026-03-12, one day before launch.",
+  "People: Ilya Quince builds the feature; Mira tests and sends the release email."
+ ],
+ "notesHash": "632c65dbd87f"
+}

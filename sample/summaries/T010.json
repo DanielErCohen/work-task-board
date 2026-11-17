@@ -1,0 +1,16 @@
+{
+ "id": "T010",
+ "description": "Prepare February's activation, retention and no-show rate on one page for Otto Penhallow. Done means Otto has the page before the weekly.",
+ "decision": {
+  "date": "2026-03-02",
+  "kind": "decision",
+  "source": "Weekly with Otto Penhallow",
+  "text": "Otto wants activation, retention and no-show rate for February on one page before the next weekly.",
+  "url": "meeting:2026-03-02_weekly-otto-mira"
+ },
+ "details": [
+  "Next: pull the three figures from the analytics export.",
+  "People: Otto Penhallow reads it; Mira prepares it."
+ ],
+ "notesHash": "ad4bef2c779a"
+}

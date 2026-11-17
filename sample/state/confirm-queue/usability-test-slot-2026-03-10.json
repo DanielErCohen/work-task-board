@@ -1,0 +1,98 @@
+{
+ "state": "open",
+ "answer": "",
+ "choice": "",
+ "comment": "",
+ "answeredAt": "",
+ "appliedAt": "",
+ "result": "",
+ "id": "usability-test-slot-2026-03-10",
+ "title": "Pick the morning for the usability test with Bea Larkspur",
+ "question": "The test needs half a day with staging frozen. Three mornings are free on both calendars before the due date.",
+ "recommendation": "Take the first slot: it leaves two working days to write up findings before the due date.",
+ "recAction": "answer",
+ "lane": "discovery",
+ "relatedTask": "T004",
+ "origin": "meeting",
+ "meeting": "Weekly, Bea and Mira, 2026-03-05",
+ "sourceUrl": "",
+ "context": "Open since the weekly on 2026-03-05. You meet Bea on the next working day at 09:30.",
+ "urgent": false,
+ "dueBy": "2026-03-11",
+ "priority": 2,
+ "urgencyNote": "you meet Bea next",
+ "prepared": [
+  "Read both calendars for the next two weeks: mornings only, 08:00 to 12:00.",
+  "Checked the launch date: no slot falls on 2026-03-13."
+ ],
+ "visual": [
+  {
+   "type": "slots",
+   "title": "Free mornings, 08:00 to 12:00",
+   "weeks": [
+    "Mira",
+    "Bea",
+    "Staging frozen"
+   ],
+   "rows": [
+    {
+     "key": "A",
+     "label": "2026-03-16",
+     "note": "four days before the due date",
+     "cells": [
+      "free",
+      "free",
+      "yes"
+     ]
+    },
+    {
+     "key": "B",
+     "label": "2026-03-17",
+     "note": "",
+     "cells": [
+      "free",
+      "free",
+      "yes"
+     ]
+    },
+    {
+     "key": "C",
+     "label": "2026-03-19",
+     "note": "one day before the due date",
+     "cells": [
+      "free",
+      "maybe",
+      "yes"
+     ]
+    }
+   ]
+  }
+ ],
+ "ready": 80,
+ "needs": [
+  "Whether the clinic admin view is tested separately."
+ ],
+ "options": [
+  {
+   "key": "A",
+   "label": "2026-03-16",
+   "detail": "A calendar hold is drafted for both of you; nothing is sent until you approve it.",
+   "recommended": true
+  },
+  {
+   "key": "B",
+   "label": "2026-03-17",
+   "detail": "A calendar hold is drafted for both of you; nothing is sent until you approve it."
+  },
+  {
+   "key": "C",
+   "label": "Ask Bea in the weekly",
+   "detail": "The item moves into the block for your next meeting with Bea and this card closes."
+  }
+ ],
+ "createdAt": "2026-03-10T07:46:00Z",
+ "preparedAt": "2026-03-10T07:46:00Z",
+ "slot": "meeting",
+ "kind": "approve",
+ "person": "Bea Larkspur"
+}
