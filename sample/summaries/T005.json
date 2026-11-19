@@ -5,12 +5,12 @@
   "date": "2026-03-06",
   "kind": "update",
   "source": "Note",
-  "text": "The current tool shows only total bookings, with no drop-off per step; Gullwing, Harbour Hop and Skerry were named as alternatives.",
+  "text": "The current tool shows only total bookings, with no drop-off per step; Stagecount, Dropmap and Lumenstat were named as alternatives.",
   "url": ""
  },
  "details": [
   "Next: compare price, setup time and what each tool tracks.",
   "Scope: the booking funnel only; the product usage reports stay where they are."
  ],
- "notesHash": "1dab0a5841a0"
+ "notesHash": "bbae6781b07f"
 }

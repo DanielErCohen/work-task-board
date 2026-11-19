@@ -7,20 +7,20 @@
  "appliedAt": "",
  "result": "",
  "id": "usability-test-slot-2026-03-10",
- "title": "Pick the morning for the usability test with Bea Larkspur",
+ "title": "Pick the morning for the usability test with Erin Bennett",
  "question": "The test needs half a day with staging frozen. Three mornings are free on both calendars before the due date.",
  "recommendation": "Take the first slot: it leaves two working days to write up findings before the due date.",
  "recAction": "answer",
  "lane": "discovery",
  "relatedTask": "T004",
  "origin": "meeting",
- "meeting": "Weekly, Bea and Mira, 2026-03-05",
+ "meeting": "Weekly, Erin and Megan, 2026-03-05",
  "sourceUrl": "",
- "context": "Open since the weekly on 2026-03-05. You meet Bea on the next working day at 09:30.",
+ "context": "Open since the weekly on 2026-03-05. You meet Erin on the next working day at 09:30.",
  "urgent": false,
  "dueBy": "2026-03-11",
  "priority": 2,
- "urgencyNote": "you meet Bea next",
+ "urgencyNote": "you meet Erin next",
  "prepared": [
   "Read both calendars for the next two weeks: mornings only, 08:00 to 12:00.",
   "Checked the launch date: no slot falls on 2026-03-13."
@@ -30,8 +30,8 @@
    "type": "slots",
    "title": "Free mornings, 08:00 to 12:00",
    "weeks": [
-    "Mira",
-    "Bea",
+    "Megan",
+    "Erin",
     "Staging frozen"
    ],
    "rows": [
@@ -86,13 +86,13 @@
   },
   {
    "key": "C",
-   "label": "Ask Bea in the weekly",
-   "detail": "The item moves into the block for your next meeting with Bea and this card closes."
+   "label": "Ask Erin in the weekly",
+   "detail": "The item moves into the block for your next meeting with Erin and this card closes."
   }
  ],
  "createdAt": "2026-03-10T07:46:00Z",
  "preparedAt": "2026-03-10T07:46:00Z",
  "slot": "meeting",
  "kind": "approve",
- "person": "Bea Larkspur"
+ "person": "Erin Bennett"
 }

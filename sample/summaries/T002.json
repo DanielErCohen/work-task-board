@@ -9,9 +9,9 @@
   "url": ""
  },
  "details": [
-  "Next: Ilya Quince fixes the default setting, then Mira tests one reschedule on a phone and one on a laptop.",
+  "Next: Josh Reed fixes the default setting, then Megan tests one reschedule on a phone and one on a laptop.",
   "Risk: the clinic support guide is ready on 2026-03-12, one day before launch.",
-  "People: Ilya Quince builds the feature; Mira tests and sends the release email."
+  "People: Josh Reed builds the feature; Megan tests and sends the release email."
  ],
- "notesHash": "632c65dbd87f"
+ "notesHash": "bd160ecb4234"
 }

@@ -120,7 +120,7 @@ if __name__ == "__main__":
             built_for = json.loads((data / "state" / "brief-today.json").read_text())["date"]
         else:
             copy_sample(data)
-        owner = "Mira Tallow"   # the invented owner of the sample
+        owner = "Megan Clark"   # the invented owner of the sample
     elif (KIT / "board.config.json").exists():
         data = KIT
     else:

@@ -6,38 +6,38 @@
  "answeredAt": "",
  "appliedAt": "",
  "result": "",
- "id": "gus-open-items-message-2026-03-10",
- "title": "Approve and send: one message to Gus Pemberton with everything open",
- "question": "Two questions for Tinfold are open and both gate the decision. One message covers them.",
+ "id": "greg-open-items-message-2026-03-10",
+ "title": "Approve and send: one message to Greg Lewis with everything open",
+ "question": "Two questions for Remindwell are open and both gate the decision. One message covers them.",
  "recommendation": "Send the draft as it is. After Approve and send, Claude mails it from your next chat session and notes the link on the provider task.",
  "recAction": "answer",
  "lane": "roadmap",
  "relatedTask": "T001",
  "origin": "meeting",
- "meeting": "Call with Gus Pemberton, 2026-03-09",
+ "meeting": "Call with Greg Lewis, 2026-03-09",
  "sourceUrl": "",
  "sourceAt": "2026-03-09T15:10:00Z",
- "context": "Gus called at 15:10 on 2026-03-09, after the design weekly. Nothing since.",
+ "context": "Greg called at 15:10 on 2026-03-09, after the design weekly. Nothing since.",
  "urgent": false,
  "dueBy": "2026-03-11",
  "priority": 1,
- "urgencyNote": "gates the comparison for Otto",
+ "urgencyNote": "gates the comparison for Steve",
  "prepared": [
   "Read the three notes on the provider task: both offers and the end date are there.",
-  "Searched the inbox for a reply from Tinfold since 2026-03-09: none.",
+  "Searched the inbox for a reply from Remindwell since 2026-03-09: none.",
   "Left out the setup question: the offer already says the setup is free."
  ],
  "visual": [
   {
    "type": "draft",
    "title": "Message",
-   "to": "Gus Pemberton",
-   "text": "Hello Gus,\n\nWe are comparing your two offers for SMS appointment reminders. Our current provider's contract ends on 2026-03-31.\n\nTwo questions before we decide:\n1. Does the two-year term allow a price review after twelve months?\n2. Can the sender name show each clinic's name?\n\nAn answer by 2026-03-11 lets us sign this week.\n\nMira"
+   "to": "Greg Lewis",
+   "text": "Hello Greg,\n\nWe are comparing your two offers for SMS appointment reminders. Our current provider's contract ends on 2026-03-31.\n\nTwo questions before we decide:\n1. Does the two-year term allow a price review after twelve months?\n2. Can the sender name show each clinic's name?\n\nAn answer by 2026-03-11 lets us sign this week.\n\nMira"
   }
  ],
  "ready": 90,
  "needs": [
-  "Whether Gus should be told that a second provider is quoting."
+  "Whether Greg should be told that a second provider is quoting."
  ],
  "options": [
   {

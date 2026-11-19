@@ -31,7 +31,7 @@ A cell holds no pipe character and no line break. `python3 board/sync_tasks.py c
 Example:
 
 ```
-| T004 | Run the usability test of the new booking flow with Bea | Not started | Medium | discovery | 2026-03-20 | RACI: A. POC: Bea Larkspur. With: Bea Larkspur (discuss). 2026-03-05 weekly with Bea Larkspur ([[2026-03-05_weekly-bea-mira]]): the test needs half a day with staging frozen; Bea prefers a morning. Open: which morning, and whether the clinic admin view is tested separately. | 2026-03-05 | 2026-03-05 | |
+| T004 | Run the usability test of the new booking flow with Erin | Not started | Medium | discovery | 2026-03-20 | RACI: A. POC: Erin Bennett. With: Erin Bennett (discuss). 2026-03-05 weekly with Erin Bennett ([[2026-03-05_weekly-erin-megan]]): the test needs half a day with staging frozen; Erin prefers a morning. Open: which morning, and whether the clinic admin view is tested separately. | 2026-03-05 | 2026-03-05 | |
 ```
 
 ## Summary file (`summaries/<ID>.json`)
@@ -44,7 +44,7 @@ What the side panel shows above the updates log. Claude writes it from the task'
 | `description` | What the task is and what done looks like. Under 45 words. Editable on the page. |
 | `decision.date` | `YYYY-MM-DD`. |
 | `decision.kind` | `decision` for a real decision or agreed commitment, `update` when the notes hold none. |
-| `decision.source` | A plain label: "Weekly with Bea Larkspur". |
+| `decision.source` | A plain label: "Weekly with Erin Bennett". |
 | `decision.text` | One or two sentences. |
 | `decision.url` | An https link, `meeting:<note file name without .md>`, or empty. |
 | `details` | Two to six one-sentence bullets, each starting with `Next:`, `Open:`, `Waiting on:`, `People:`, `Scope:`, `Numbers:`, `Risk:` or `Background:`. |
@@ -55,9 +55,9 @@ Example:
 ```json
 {
  "id": "T004",
- "description": "Run the usability test of the new booking flow with Bea Larkspur. Done means the findings are in the research sheet and the top three problems have owners.",
- "decision": {"date": "2026-03-05", "kind": "decision", "source": "Weekly with Bea Larkspur", "text": "The test happens on a morning with staging frozen.", "url": "meeting:2026-03-05_weekly-bea-mira"},
- "details": ["Open: which morning, and whether the clinic admin view is tested separately.", "People: Bea Larkspur runs the test; Mira freezes staging."],
+ "description": "Run the usability test of the new booking flow with Erin Bennett. Done means the findings are in the research sheet and the top three problems have owners.",
+ "decision": {"date": "2026-03-05", "kind": "decision", "source": "Weekly with Erin Bennett", "text": "The test happens on a morning with staging frozen.", "url": "meeting:2026-03-05_weekly-erin-megan"},
+ "details": ["Open: which morning, and whether the clinic admin view is tested separately.", "People: Erin Bennett runs the test; Megan freezes staging."],
  "notesHash": "set by stamp"
 }
 ```
@@ -76,7 +76,7 @@ One prepared decision. The file name is the `id`.
 | `lane` | A category, shown as a tag. |
 | `relatedTask` | A task ID or empty. |
 | `origin` | `meeting`, `email` or `chat`. |
-| `meeting` | A plain source label with the date: "Chat with Bea Larkspur, 2026-03-09". |
+| `meeting` | A plain source label with the date: "Chat with Erin Bennett, 2026-03-09". |
 | `sourceUrl` | An https link to the source, or empty. |
 | `sourceAt` | When the source happened, UTC ISO time. Optional. |
 | `context` | One or two sentences placing the item in its day. Optional. |
@@ -113,10 +113,10 @@ Example (the plain form; `sample/state/confirm-queue/` has one card for each of 
 {
  "id": "staging-login-repair-2026-03-10",
  "title": "Track the broken staging login as a task?",
- "question": "Bea Larkspur wrote on 2026-03-09 that the staging login fails for her test account, which blocks her usability test. Nobody was named to fix it and no date was set.",
- "recommendation": "Add it as a Low priority delivery task with Bea as point of contact. Confirm adds the row; Drop it leaves it in the chat.",
+ "question": "Erin Bennett wrote on 2026-03-09 that the staging login fails for her test account, which blocks her usability test. Nobody was named to fix it and no date was set.",
+ "recommendation": "Add it as a Low priority delivery task with Erin as point of contact. Confirm adds the row; Drop it leaves it in the chat.",
  "recAction": "add", "lane": "delivery", "relatedTask": "", "origin": "chat",
- "meeting": "Chat with Bea Larkspur, 2026-03-09", "sourceUrl": "",
+ "meeting": "Chat with Erin Bennett, 2026-03-09", "sourceUrl": "",
  "urgent": false, "dueBy": "", "priority": 3, "urgencyNote": "",
  "state": "open", "answer": "", "choice": "", "comment": "", "answeredAt": "", "appliedAt": "", "result": "",
  "createdAt": "2026-03-10T07:46:00Z"
@@ -147,25 +147,25 @@ Example:
  "date": "2026-03-10",
  "dayDate": "2026-03-10",
  "generatedAt": "2026-03-10T07:46:00Z",
- "reminders": ["The monthly metrics Otto Penhallow asked for are a day late; the weekly is at 14:00."],
- "note": "The weekly with Otto Penhallow is today at 14:00, and the monthly metrics he asked for are a day late.",
+ "reminders": ["The monthly metrics Steve Walker asked for are a day late; the weekly is at 14:00."],
+ "note": "The weekly with Steve Walker is today at 14:00, and the monthly metrics he asked for are a day late.",
  "top": [
-  {"taskId": "T010", "title": "Prepare the monthly product metrics for Otto",
+  {"taskId": "T010", "title": "Prepare the monthly product metrics for Steve",
    "whyShort": "A day late, weekly at 14:00", "nextShort": "Pull three figures; Claude drafts the page",
-   "why": "Otto Penhallow asked for the page before the weekly, which is today at 14:00, and the due date was 2026-03-09.",
+   "why": "Steve Walker asked for the page before the weekly, which is today at 14:00, and the due date was 2026-03-09.",
    "next": "Pull activation, retention and no-show rate from the analytics export; Claude can draft the page once you paste the three figures."}
  ],
  "people": [
-  {"name": "Bea Larkspur", "meeting": "Design check-in, Bea and Mira", "start": "09:30", "end": "10:00", "when": "today, 09:30",
+  {"name": "Erin Bennett", "meeting": "Design check-in, Erin and Megan", "start": "09:30", "end": "10:00", "when": "today, 09:30",
    "owe": [{"short": "Answer on the staging login", "text": "She reported the broken login on 2026-03-09 and has no reply yet.", "confirm": true}],
    "ask": [],
    "decide": [{"short": "Morning for the usability test", "text": "Three mornings are free on both calendars; the first is 2026-03-16.", "taskId": "T004", "confirm": true}]},
-  {"name": "Ilya Quince", "meeting": "Booking flow walk-through", "start": "11:00", "end": "11:30", "when": "today, 11:00", "owe": [], "ask": [], "decide": []}
+  {"name": "Josh Reed", "meeting": "Booking flow walk-through", "start": "11:00", "end": "11:30", "when": "today, 11:00", "owe": [], "ask": [], "decide": []}
  ],
  "deadlines": [
   {"date": "2026-03-13", "title": "Online rescheduling launch",
    "yours": [{"text": "Two test reschedules, one on a phone and one on a laptop", "taskId": "T002"}],
-   "waiting": [{"who": "Ilya Quince", "text": "the default setting fix", "taskId": "T002"}]}
+   "waiting": [{"who": "Josh Reed", "text": "the default setting fix", "taskId": "T002"}]}
  ]
 }
 ```

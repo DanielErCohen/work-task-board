@@ -1,23 +1,23 @@
 {
  "date": "2026-03-10",
  "generatedAt": "2026-03-10T07:46:00Z",
- "note": "The weekly with Otto Penhallow is today at 14:00, and the monthly metrics he asked for are a day late.",
+ "note": "The weekly with Steve Walker is today at 14:00, and the monthly metrics he asked for are a day late.",
  "top": [
   {
    "taskId": "T010",
-   "title": "Prepare the monthly product metrics for Otto",
+   "title": "Prepare the monthly product metrics for Steve",
    "whyShort": "A day late, weekly at 14:00",
    "nextShort": "Pull three figures; Claude drafts the page",
-   "why": "Otto Penhallow asked for the page before the weekly, which is today at 14:00, and the due date was 2026-03-09.",
+   "why": "Steve Walker asked for the page before the weekly, which is today at 14:00, and the due date was 2026-03-09.",
    "next": "Pull activation, retention and no-show rate from the analytics export; Claude can draft the page once you paste the three figures."
   },
   {
    "taskId": "T003",
    "title": "Fix reminder texts that go out an hour late after the clock change",
    "whyShort": "Due tomorrow, costs missed appointments",
-   "nextShort": "Ilya ships the fix; you test",
+   "nextShort": "Josh ships the fix; you test",
    "why": "Each affected clinic loses about 3 appointments a week and the fix is due on 2026-03-11.",
-   "next": "Ilya Quince ships the fix; you check the three clinic time zones in staging."
+   "next": "Josh Reed ships the fix; you check the three clinic time zones in staging."
   },
   {
    "taskId": "T002",
@@ -25,13 +25,13 @@
    "whyShort": "Critical, launch in three days",
    "nextShort": "Default setting, then two test reschedules",
    "why": "The launch is on 2026-03-13 and the default setting for new clinics still has rescheduling switched off.",
-   "next": "Ilya Quince fixes the default; you test one reschedule on a phone and one on a laptop."
+   "next": "Josh Reed fixes the default; you test one reschedule on a phone and one on a laptop."
   }
  ],
  "people": [
   {
-   "name": "Bea Larkspur",
-   "meeting": "Design check-in, Bea and Mira",
+   "name": "Erin Bennett",
+   "meeting": "Design check-in, Erin and Megan",
    "when": "today, 09:30",
    "owe": [
     {
@@ -64,7 +64,7 @@
    "end": "10:00"
   },
   {
-   "name": "Ilya Quince",
+   "name": "Josh Reed",
    "meeting": "Booking flow walk-through",
    "start": "11:00",
    "end": "11:30",
@@ -74,8 +74,8 @@
    "decide": []
   },
   {
-   "name": "Otto Penhallow",
-   "meeting": "Weekly, Otto and Mira",
+   "name": "Steve Walker",
+   "meeting": "Weekly, Steve and Megan",
    "when": "today, 14:00",
    "owe": [
     {
@@ -85,7 +85,7 @@
     },
     {
      "short": "Provider offers side by side",
-     "text": "He wants the comparison of the two Tinfold offers before he signs; due 2026-03-11.",
+     "text": "He wants the comparison of the two Remindwell offers before he signs; due 2026-03-11.",
      "taskId": "T001"
     }
    ],
@@ -99,7 +99,7 @@
    "decide": [
     {
      "short": "One-year or two-year term",
-     "text": "0.045 per message for one year against 0.041 for two; the price review question is still open with Tinfold.",
+     "text": "0.045 per message for one year against 0.041 for two; the price review question is still open with Remindwell.",
      "taskId": "T001",
      "confirm": true
     }
@@ -110,7 +110,7 @@
  ],
  "dayDate": "2026-03-10",
  "reminders": [
-  "The monthly metrics Otto Penhallow asked for are a day late; the weekly is at 14:00.",
+  "The monthly metrics Steve Walker asked for are a day late; the weekly is at 14:00.",
   "Three meetings today; the morning after 11:30 is free."
  ],
  "deadlines": [
@@ -125,7 +125,7 @@
    ],
    "waiting": [
     {
-     "who": "Ilya Quince",
+     "who": "Josh Reed",
      "text": "ships the fix",
      "taskId": "T003"
     }
@@ -142,7 +142,7 @@
    ],
    "waiting": [
     {
-     "who": "Ilya Quince",
+     "who": "Josh Reed",
      "text": "the default setting fix",
      "taskId": "T002"
     }

@@ -1,16 +1,16 @@
 {
  "id": "T004",
- "description": "Run the usability test of the new booking flow with Bea Larkspur. Done means the findings are in the research sheet and the top three problems have owners.",
+ "description": "Run the usability test of the new booking flow with Erin Bennett. Done means the findings are in the research sheet and the top three problems have owners.",
  "decision": {
   "date": "2026-03-05",
   "kind": "decision",
-  "source": "Weekly with Bea Larkspur",
+  "source": "Weekly with Erin Bennett",
   "text": "The test happens on a morning with staging frozen.",
-  "url": "meeting:2026-03-05_weekly-bea-mira"
+  "url": "meeting:2026-03-05_weekly-erin-megan"
  },
  "details": [
   "Open: which morning, and whether the clinic admin view is tested separately.",
-  "People: Bea Larkspur runs the test; Mira freezes staging."
+  "People: Erin Bennett runs the test; Megan freezes staging."
  ],
- "notesHash": "3efadc6bc172"
+ "notesHash": "82b5f00562bb"
 }

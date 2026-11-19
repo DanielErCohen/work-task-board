@@ -1,11 +1,11 @@
 ---
 date: 2026-03-02
-title: Weekly, Otto and Mira
+title: Weekly, Steve and Megan
 type: 1-on-1
-attendees: [otto-penhallow, mira-tallow]
+attendees: [steve-walker, megan-clark]
 ---
 
-# Weekly, Otto and Mira, 2026-03-02
+# Weekly, Steve and Megan, 2026-03-02
 
 Invented sample note.
 
@@ -16,7 +16,7 @@ The SMS provider contract and the monthly product metrics.
 - At least two quotes before an SMS provider is chosen.
 
 ## Confirmed commitments
-- Mira prepares February's activation, retention and no-show rate on one page before the next weekly (T010).
+- Megan prepares February's activation, retention and no-show rate on one page before the next weekly (T010).
 
 ## Proposed tasks
 - None.

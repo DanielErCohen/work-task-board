@@ -9,21 +9,21 @@
  "id": "analytics-tool-choice-2026-03-10",
  "title": "Pick the analytics tool for the booking funnel",
  "question": "Three tools were named in the weekly on 2026-03-05. The comparison is done; the choice is yours.",
- "recommendation": "Take Harbour Hop: it is the only one that meets the one-week setup goal and tracks every funnel step.",
+ "recommendation": "Take Dropmap: it is the only one that meets the one-week setup goal and tracks every funnel step.",
  "recAction": "answer",
  "lane": "discovery",
  "relatedTask": "T005",
  "origin": "meeting",
- "meeting": "Weekly, Bea and Mira, 2026-03-05",
+ "meeting": "Weekly, Erin and Megan, 2026-03-05",
  "sourceUrl": "",
- "context": "Raised in the weekly with Bea Larkspur. Nothing since.",
+ "context": "Raised in the weekly with Erin Bennett. Nothing since.",
  "urgent": false,
  "dueBy": "",
  "priority": 2,
  "urgencyNote": "",
  "prepared": [
   "Read each tool's public price page on 2026-03-10.",
-  "Could not check funnel tracking for Skerry: its page lists page views only."
+  "Could not check funnel tracking for Lumenstat: its page lists page views only."
  ],
  "visual": [
   {
@@ -38,21 +38,21 @@
    ],
    "rows": [
     [
-     "Gullwing",
+     "Stagecount",
      "690",
      "6",
      "no",
      "yes"
     ],
     [
-     "Harbour Hop",
+     "Dropmap",
      "740",
      "4",
      "yes",
      "yes"
     ],
     [
-     "Skerry",
+     "Lumenstat",
      "580",
      "7",
      "maybe",
@@ -66,13 +66,13 @@
  "options": [
   {
    "key": "A",
-   "label": "Harbour Hop",
+   "label": "Dropmap",
    "detail": "The task moves to In Progress with a trial account as the next step.",
    "recommended": true
   },
   {
    "key": "B",
-   "label": "Gullwing",
+   "label": "Stagecount",
    "detail": "The task moves to In Progress with a trial account as the next step."
   },
   {

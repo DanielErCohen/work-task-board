@@ -8,13 +8,13 @@
  "result": "",
  "id": "staging-login-repair-2026-03-10",
  "title": "Track the broken staging login as a task?",
- "question": "Bea Larkspur wrote on 2026-03-09 that the staging login fails for her test account, which blocks her usability test. Nobody was named to fix it and no date was set.",
- "recommendation": "Add it as a Low priority delivery task with Bea as point of contact. Confirm adds the row; Drop it leaves it in the chat.",
+ "question": "Erin Bennett wrote on 2026-03-09 that the staging login fails for her test account, which blocks her usability test. Nobody was named to fix it and no date was set.",
+ "recommendation": "Add it as a Low priority delivery task with Erin as point of contact. Confirm adds the row; Drop it leaves it in the chat.",
  "recAction": "add",
  "lane": "delivery",
  "relatedTask": "",
  "origin": "chat",
- "meeting": "Chat with Bea Larkspur, 2026-03-09",
+ "meeting": "Chat with Erin Bennett, 2026-03-09",
  "sourceUrl": "",
  "urgent": false,
  "dueBy": "",
@@ -23,5 +23,5 @@
  "createdAt": "2026-03-10T07:46:00Z",
  "slot": "meeting",
  "kind": "approve",
- "person": "Bea Larkspur"
+ "person": "Erin Bennett"
 }
