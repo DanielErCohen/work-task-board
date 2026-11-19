@@ -13,7 +13,7 @@ How I use it and why I built it: https://danielercohen.github.io/ai-pm/toolkit/w
 - A Markdown table of tasks, `tasks.md`, is the source of truth. It lives in your own notes folder.
 - A private page on claude.ai shows the table (Claude calls such a page an artifact). Each task opens a side panel with a description, the last decision, the updates log and its references.
 - A **To confirm** queue holds decisions Claude has prepared for you: a drafted message, a comparison table, free time slots, or a plain question. You pick an option and press Send.
-- A **day view** opens the page, written by the morning brief: **Now** (reminders and the cards a date depends on), **Unblock others** (quick answers that start someone else's work), **The day** (one row per meeting with what you owe, what to ask and what to decide together), **Deadlines** and the Top three as one **Focus** line.
+- A **day view** opens the page, written by the morning brief: **Now** (reminders and the cards a date depends on), **Unblock others** (quick answers that start someone else's work), **The day** (one row per meeting, read from your calendar, with what you owe, what to ask and what to decide together), **Deadlines** and the Top three as one **Focus** line.
 - An **Ask Claude** box on the page adds, changes or closes tasks from a plain sentence.
 - An **hourly job** files your meeting notes, applies the answers you gave on the page, prepares new cards and writes the brief. It reads, files and prepares, and it never sends or posts. Anything you approve for sending goes out from your next chat with Claude.
 - A **brain** file, `BRAIN.md`, holds the rules for how Claude works for you: prepare first, ask second. The setup writes it from your answers. It is the most important file in the kit.
@@ -57,7 +57,7 @@ The setup checks each of these and tells you what is missing.
 python3 tools/preview.py
 ```
 
-Open http://localhost:8765/ to see the sample: the brief, the queue with its card forms, the task groups and the side panel. Edits in the preview stay in the browser tab.
+Open http://localhost:8765/ to see the sample: the day view, the cards, the task groups and the side panel. Edits in the preview stay in the browser tab.
 
 ## Set it up
 
@@ -68,7 +68,7 @@ Open Claude Code in this folder and say: "Read SETUP.md and follow it." Claude a
 - Tested: the scripts on the sample from a separate folder (`check`, `export`, `import`, the job helpers), and the page in a browser through `tools/preview.py` at desktop and phone width, in light and dark, with the sample and with an empty database.
 - Tested on 2026-11-18: the day view through `tools/preview.py` with the sample (card placement, a tick, Send on a card inside a meeting row, the full queue, the Copy button present) at desktop width in light and at phone width in dark, with no errors in the browser console.
 - Not yet tested: `UPDATE.md` on a board other than my own, where the same change was made by hand.
-- Setup run, 18 November 2026: two Claude sessions in the Claude desktop app followed SETUP.md from start to finish with written answers, on my own account. One used the sample, the other an existing to-do list and a folder of meeting notes. Both built the board folder, published the page and filled its database. They used the page as it was before the day view.
+- Setup run, 18 November 2026: two Claude Code sessions in the Claude desktop app followed SETUP.md from start to finish with written answers, on my own account. One used the sample, the other an existing to-do list and a folder of meeting notes. Both built the board folder, published the page and filled its database. They used the page as it was before the day view and had no calendar connected.
 - In both, the first run of the scheduled job stopped at once on a rule I have since removed. The corrected job then filed a meeting note, queued two cards and wrote the morning brief when a session followed the job file by hand. Its start from the scheduler has not run again.
 - Not yet tested: a person other than me running the setup, a second account, Ask Claude on a newly set-up page, and the mail, chat and calendar sources outside my own board.
 - The setup has not been timed with a person. If you run it, tell me how long it took.

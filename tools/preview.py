@@ -6,6 +6,7 @@
   python3 tools/preview.py --data <folder>      a board folder (the one that holds board.config.json)
   python3 tools/preview.py --port 8765          another port (default 8765)
   python3 tools/preview.py --no-serve --out <folder>   only write index.html there
+  python3 tools/preview.py --no-serve --out <folder> --about <link>   the same, with a "Set up your own" link in the notice
 
 Then open http://localhost:8765/ . Add ?theme=dark or ?theme=light to force a theme, and ?ask=off to see
 the page without the Ask Claude button.
@@ -72,11 +73,11 @@ STUB = r"""
 """
 
 
-BANNER = """<div style="padding:8px 16px;text-align:center;font:13px/1.4 var(--font, system-ui, sans-serif);background:var(--primary-light, #E7ECFF);color:var(--text, #1b1f2a);border-bottom:1px solid var(--border, #d0d5e2)">This is a made-up sample board. Every person and figure is invented. Your edits stay in this browser tab, and Ask Claude answers with a fixed line here.</div>
+BANNER = """<div style="padding:8px 16px;text-align:center;font:13px/1.4 var(--font, system-ui, sans-serif);background:var(--primary-light, #E7ECFF);color:var(--text, #1b1f2a);border-bottom:1px solid var(--border, #d0d5e2)">This is a made-up sample board. Every person and figure is invented. Your edits stay in this browser tab, and Ask Claude answers with a fixed line here.__ABOUT__</div>
 """
 
 
-def build(data, owner="", built_for=None):
+def build(data, owner="", built_for=None, about=""):
     """Return the preview page for the board folder `data`. `owner` replaces the name in the page's config block.
     `built_for` (an ISO day) makes a static demo: the page moves the data's dates to the visitor's today and shows a sample notice."""
     cfg_path = data / "board.config.json"
@@ -98,7 +99,8 @@ def build(data, owner="", built_for=None):
     if owner:   # the sample belongs to an invented person; show her name where the page's config has a placeholder
         page = page.replace("</script>", "</script>\n<script>window.BOARD_CONFIG.owner = " + json.dumps(owner) + ";</script>", 1)
     stub = STUB.replace("__BUILT_FOR__", json.dumps(built_for)).replace("__SEED__", json.dumps(seed, ensure_ascii=False).replace("</", "<\\/"))
-    return '<!doctype html>\n<html lang="en">\n<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n</head>\n<body>\n' + stub + (BANNER if built_for else "") + page + "\n</body>\n</html>\n"
+    more = ' <a href="' + about.replace('"', '%22') + '" style="color:inherit;font-weight:600">Set up your own</a>' if about else ""
+    return '<!doctype html>\n<html lang="en">\n<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n</head>\n<body>\n' + stub + (BANNER.replace("__ABOUT__", more) if built_for else "") + page + "\n</body>\n</html>\n"
 
 
 if __name__ == "__main__":
@@ -127,7 +129,7 @@ if __name__ == "__main__":
         sys.exit("No sample folder and no board.config.json here. Pass --data <board folder>.")
     site = Path(opt("--out") or tempfile.mkdtemp(prefix="board-site-")).resolve()
     site.mkdir(parents=True, exist_ok=True)
-    (site / "index.html").write_text(build(data, owner, built_for))
+    (site / "index.html").write_text(build(data, owner, built_for, opt("--about", "")))
     if static:
         print(f"wrote {site / 'index.html'}")
         sys.exit(0)

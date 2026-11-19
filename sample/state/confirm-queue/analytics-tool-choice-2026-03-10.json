@@ -9,7 +9,7 @@
  "id": "analytics-tool-choice-2026-03-10",
  "title": "Pick the analytics tool for the booking funnel",
  "question": "Three tools were named in the weekly on 2026-03-05. The comparison is done; the choice is yours.",
- "recommendation": "Take Dropmap: it is the only one that meets the one-week setup goal and tracks every funnel step.",
+ "recommendation": "Take Dropmap: it is the fastest to set up and the only one that tracks every funnel step.",
  "recAction": "answer",
  "lane": "discovery",
  "relatedTask": "T005",

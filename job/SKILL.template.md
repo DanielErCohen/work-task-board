@@ -12,7 +12,7 @@ model: {{JOB_MODEL}}
 Work in `{{BOARD_FOLDER}}`: change into that folder before the first command, because a scheduled run can start somewhere else. This is the only scheduled writer of `tasks.md`. It runs every hour, so an hour with nothing new must cost almost nothing: do the precheck first and read no other file until it finds work.
 
 Board: {{BOARD_URL}} (read and write its database with the `ArtifactData` tool).
-Tool names: this file uses Claude Code's. In the Claude desktop app the same actions are `db_get`, `db_query`, `db_list` and `db_write` on the artifacts connector: a `batch` is one `db_write` with several `set` ops, and `if_version` is `ifVersion`. They take the page's slug in place of its address: `get_artifact` with the address returns it. Those tools return documents in the reply and save no files, so where this file says `out_dir`, save each returned document yourself as `<scratch folder>/<collection>/<id>.json`.
+Tool names: this file uses the ones from Claude Code in the terminal. In Claude Code inside the Claude desktop app the same actions are `db_get`, `db_query`, `db_list` and `db_write` on the artifacts connector: a `batch` is one `db_write` with several `set` ops, and `if_version` is `ifVersion`. They take the page's slug in place of its address: `get_artifact` with the address returns it. Those tools return documents in the reply and save no files, so where this file says `out_dir`, save each returned document yourself as `<scratch folder>/<collection>/<id>.json`.
 Scripts: `job/scripts/hourly_precheck.py`, `job/scripts/efficiency_report.py`, `board/sync_tasks.py`. Formats: `docs/formats.md`.
 
 ## 1. Precheck

@@ -8,9 +8,9 @@ You are setting up a private task board for the person you are talking to, from 
 
 Talk to the person in plain words. They may never have used a terminal. When a step needs a technical term, say what it means in the same sentence: an "artifact" is a page Claude publishes on claude.ai; a "scheduled task" is a prompt Claude Code runs by itself at set times; a "connector" is a link that lets Claude read their calendar, mail or chat; "git" is a tool that keeps the history of a folder's files, and a "commit" saves one step of that history.
 
-Tool names differ between apps. This file uses Claude Code's. In the Claude desktop app the same actions sit on the artifacts connector and the scheduled-tasks connector; search your tools for "artifact" and "scheduled task" when you do not see them.
+Tool names differ by where Claude Code runs. This file uses the names from Claude Code in the terminal. In Claude Code inside the Claude desktop app the same actions sit on the artifacts connector and the scheduled-tasks connector; search your tools for "artifact" and "scheduled task" when you do not see them.
 
-| This file says | Claude desktop app |
+| This file says | Claude Code in the desktop app |
 |---|---|
 | the `artifact-capabilities` skill | `describe_capabilities` |
 | publish with capabilities | `publish_files`, then `declare_capabilities` on the version it returned |
@@ -42,7 +42,7 @@ Ask these one at a time, in this order. Skip a question the person already answe
    - Meeting notes. Do they arrive by mail from a meeting tool, do you save them as files in a folder, or neither? For mail, find the sender address yourself by searching their mail for a recent note and confirm it with them. For a folder, it must be a different folder from the one the filed notes go into. When the notes folder has no place for filed meeting notes yet, say that they go into `meetings/` in the board folder and ask whether that is right.
    - Mail: the inbox and sent mail, read twice a day for requests and promises.
    - Chat: which channels and direct conversations, read twice a day. Take the names; you look up the IDs in step 5.
-   - Calendar: for the per-person blocks in the morning brief.
+   - Calendar: it fills The day at the top of the page, one row per meeting, and the job checks it every hour. Without it that part of the page stays empty.
    - An issue tracker or code repository to search before Claude proposes new work.
 8. **Answers.** How do you want Claude to answer you? Length, structure, language, anything you do not want to see. The default is: the bottom line first, then one-sentence bullets; a lookup gets one line; a decision gets the assessment, the strongest counter and one recommendation; plain words.
 9. **Limits.** What may Claude never do without your yes? The default list is: send a message or mail, post in a channel, publish a page or document that others can see, create or change a ticket, send a calendar invite, change a task's status, priority or due date. Add to it or remove from it. Is anything else off limits (files other people own, topics, systems)?

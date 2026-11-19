@@ -837,7 +837,7 @@ label textarea { min-height: 120px; resize: vertical; line-height: 1.45; }
       const count = left || cs.length ? [left ? plural(left, "point") : "", cs.length ? plural(cs.length, "card") : ""].filter(Boolean).join(" · ") : "all discussed";
       const foot = `<div class="pfoot">${done ? `<span>${done} discussed</span>` : ""}<button type="button" class="linkbtn" data-person="${esc(p.name)}">Full list in the side panel</button>${left && state.canWrite ? `<button type="button" class="linkbtn" data-tickall="${esc(p.name)}">Mark all discussed</button>` : ""}</div>`;
       return `<details class="drow" data-pk="${esc(k)}" ${pIs(k, i === firstOpen) ? "open" : ""}><summary>${time}<span class="dwho">${who}</span><span class="pcount">${esc(count)}</span></summary><div class="dbody">${total ? `<div class="pcard">${P_GROUPS.map(([kind, label2]) => pCol(p, kind, label2)).join("")}</div>` : ""}${cs.length ? `<div class="cq dcards">${cs.map((c, j) => confirmItemHtml(c, j)).join("")}</div>` : ""}${total ? foot : ""}</div></details>`;
-    }).join("") : '<p class="brief-note dempty">No meetings are listed for this day yet. The first run of the day adds them.</p>';
+    }).join("") : '<p class="brief-note dempty">No meetings are listed for this day yet. The first run of the day adds them from your calendar, when it is connected.</p>';
 
     // Deadlines: outside dates with what feeds them, split into your move and waiting on others. Without a list
     // from the brief, the tasks due within seven days stand in, each marked with whose move it is.
@@ -969,7 +969,7 @@ label textarea { min-height: 120px; resize: vertical; line-height: 1.45; }
     const fold = $("queueFold"), wantOpen = pIs("queue", false);
     if (fold.open !== wantOpen) fold.open = wantOpen;
     $("confirmList").innerHTML = (placed.length ? `<ul class="qlist">${placed.map((x) => `<li><span class="cat">${esc(where(x))}</span><button type="button" class="tt" data-jump="${esc(x.c.id)}">${esc(x.c.title)}</button></li>`).join("")}</ul>`
-      : '<div class="cq-empty"><b>Nothing to confirm.</b> Task candidates from your meetings appear here within the hour, each with a recommendation.</div>')
+      : '<div class="cq-empty"><b>Nothing to confirm.</b> Task candidates appear here within the hour, each with a recommendation.</div>')
       + (doneToday.length ? `<details class="more cq-done" id="doneToday" ${state.doneOpen ? "open" : ""}><summary>Today’s confirmed <span class="n">${doneToday.length}</span></summary><ul>${doneToday.map(doneRow).join("")}</ul></details>` : "");
     $("doneToday")?.addEventListener("toggle", (e) => { state.doneOpen = e.target.open; });
     // Archive: every decision from before today, newest day first.
@@ -1718,7 +1718,7 @@ label textarea { min-height: 120px; resize: vertical; line-height: 1.45; }
     db.collection("confirm").onSnapshot((snap) => {
       state.confirm = new Map(snap.docs.filter((d) => d.exists).map((d) => [d.id, { ...d.data(), id: d.id }]));
       renderConfirm(); renderToday();
-    }, () => { $("confirmList").innerHTML = '<div class="cq-empty"><b>The To confirm list stopped updating.</b> Reload the page to reconnect.</div>'; });
+    }, () => { $("confirmList").innerHTML = '<div class="cq-empty"><b>The cards stopped updating.</b> Reload the page to reconnect.</div>'; });
     db.collection("tasks").onSnapshot((snap) => {
       state.tasks = new Map(snap.docs.filter((d) => d.exists).map((d) => [d.id, cleanTask({ id: d.id, ...d.data() })]));
       state.loaded = true;
