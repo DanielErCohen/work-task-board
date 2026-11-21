@@ -1,6 +1,6 @@
 # Set up your own Work Task Board
 
-In the Claude desktop app, open the Code tab, start a new session (**+ New**), choose any folder for it (an empty one is fine) and paste one line:
+In the Claude desktop app, open the Code tab, start a new session (**+ New**), choose your Documents folder for it and paste one line:
 
 > Read setup.md in the work-task-board folder I downloaded and set up my work board. Interview me first, one question at a time, and build nothing until I confirm your summary.
 
