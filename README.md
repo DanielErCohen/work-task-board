@@ -1,4 +1,4 @@
-# Work Task Board kit
+# Work task board kit
 
 A private task board that Claude keeps for you. You open one page in the morning and see what waits on you today, who you meet and what to raise with each person, and the decisions Claude has already prepared for your yes or no. This folder is the kit that builds your own copy. Claude sets it up by asking you questions; you write no code and need no technical knowledge.
 
