@@ -40,6 +40,9 @@ def config():
     return cfg, path.resolve().parent / cfg.get("state", "state")
 
 
+if any(a in ("--help", "-h") for a in sys.argv[1:]):   # help needs no board folder
+    print(__doc__)
+    sys.exit(0)
 CFG, STATE = config()
 LOCK = STATE / "run.lock"
 RUN = STATE / "hourly-run.json"

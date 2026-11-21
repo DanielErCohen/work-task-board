@@ -363,7 +363,7 @@ def import_(src):
     next_n = max([int(r["id"][1:]) for r in rows] or [0]) + 1
     for d in edits:
         tid = d.get("id")
-        if not re.match(r"^T\d+$", str(tid or "")):
+        if not re.fullmatch(r"T[0-9]+", str(tid or "")):
             print(f"skipped a document without a task id: {str(tid)[:40]}")
             continue
         clear.append(tid)
@@ -406,6 +406,10 @@ def import_(src):
                 if v:
                     print(f"not applied: {tid} priority '{v[:40]}' is not a known priority; kept '{r[k]}'")
                     rejected.append(tid)
+                continue
+            if k == "category" and len(v) > 40:
+                print(f"not applied: {tid} category '{v[:40]}' is longer than 40 characters; kept '{r[k]}'")
+                rejected.append(tid)
                 continue
             if k == "notes":   # the board's notes field never holds the owner markers; they are put back below
                 v = split_owner(v)[2]

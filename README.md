@@ -15,7 +15,7 @@ Every person, company and figure in the picture is invented.
 
 On a Mac, the app may ask whether Claude can open your Downloads or Documents folder: choose **Allow**, or Claude cannot read the kit. If you declined, switch it on in System Settings, Privacy & Security, Files and Folders, under Claude, and paste the line again.
 
-When Claude cannot find the folder, it says so and stops. Paste the line again with the folder's full path in place of "the work-task-board folder I downloaded".
+When Claude cannot find the folder, it says so and stops. Paste the line again with the folder's full path in place of "the work-task-board folder I downloaded". To get a folder's path on a Mac, right-click the folder in Finder, hold the Option key and choose **Copy "<folder name>" as Pathname**. On Windows, right-click the folder and choose **Copy as path** (on Windows 10, hold Shift while you right-click).
 
 What happens after you paste it:
 
@@ -26,6 +26,8 @@ What happens after you paste it:
 5. Your page welcomes you by name. Its **Setup** button lists what is still open, such as your mail, your chat, the people you work with and your limits, and how to add each one when you want it.
 
 To look before you answer anything, ask Claude to "show me the sample board first". It opens the invented sample on your own computer and publishes nothing.
+
+So far only the author's own Claude sessions have run this setup. No other person has. `versions-and-tests.md` lists what each test covered.
 
 ## What you get
 
@@ -46,7 +48,7 @@ You do not have to check any of this yourself. The setup tests each item on your
 | A page with its own data store | Claude can publish a private page on claude.ai that only you can open (Claude calls it an artifact) and that keeps your tasks in a small database | The setup stops and says so; the board cannot work |
 | Ask Claude on the page | The page's permission to call Claude | The page shows a New task button instead; the rest works |
 | A scheduled task | A prompt Claude Code runs by itself at set times | You start the job by saying "run the board job" |
-| Python 3.9 or later | The language the kit's small scripts are written in; Claude runs them for you | On a Mac without it, macOS offers to install Apple's command line developer tools, which include it: choose Install, then Agree, and tell Claude when it has finished. On Windows, install it from python.org before you start. Otherwise the setup stops and tells you what to install |
+| Python 3.9 or later | The language the kit's small scripts are written in; Claude runs them for you | On a Mac without it, macOS offers to install Apple's command line developer tools, which include it: choose Install, then Agree, and tell Claude when it has finished. On Windows, install it from python.org before you start, and tick "Add python.exe to PATH" in the installer. Otherwise the setup stops and tells you what to install |
 | Google Calendar, Gmail and Slack connected to Claude | The links (connectors) that let Claude read them; you switch them on in the Claude app under Customize, then Connectors | Each one switches on a part of the job; the board works without them, and the meeting rows at the top stay empty without the calendar |
 
 ## What stays private

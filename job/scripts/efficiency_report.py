@@ -92,5 +92,8 @@ def main(days):
 
 
 if __name__ == "__main__":
+    if any(a in ("--help", "-h") for a in sys.argv[1:]):
+        print(__doc__)
+        sys.exit(0)
     nums = [a for a in sys.argv[1:] if a.isdigit()]
     main(int(nums[0]) if nums else 7)
