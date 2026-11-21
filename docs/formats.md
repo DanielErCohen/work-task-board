@@ -10,7 +10,7 @@ One line per task in one Markdown table: keep all rows together, with headings a
 |---|---|---|
 | 1 | ID | `T` and three digits, counting up: `T001`. |
 | 2 | Title | Plain words, starts with a verb. |
-| 3 | Status | One of: In Review, In Progress, Postponed, Pending others, Planning, Not started, Done, Abandoned. The page shows In Progress as "Working on now" and Postponed as "Started, postponed". |
+| 3 | Status | One of: In Review, In Progress, Postponed, Pending others, Planning, Not started, Done, Abandoned. The page shows In Progress as "Working on now" and Postponed as "Started, postponed". A board with its own statuses lists them in `board.config.json` and in the page's config block; the two lists must match. |
 | 4 | Priority | Critical, High, Medium or Low. |
 | 5 | Category | One of your work areas, or `general`. At most 40 characters. |
 | 6 | Due | `YYYY-MM-DD` or empty. For a Postponed task this is the restart date. |
@@ -28,9 +28,11 @@ The notes cell, in order:
 
 A cell holds no pipe character and no line break. `python3 board/sync_tasks.py check` verifies every row; run it after every edit.
 
-Example:
+The two header lines of the table, then an example row:
 
 ```
+| ID | Title | Status | Priority | Category | Due | Notes | Opened | Last changed | Closed |
+|----|-------|--------|----------|----------|-----|-------|--------|--------------|--------|
 | T004 | Run the usability test of the new booking flow with Erin | Not started | Medium | discovery | 2026-03-20 | RACI: A. POC: Erin Bennett. With: Erin Bennett (discuss). 2026-03-05 weekly with Erin Bennett ([[2026-03-05_weekly-erin-megan]]): the test needs half a day with staging frozen; Erin prefers a morning. Open: which morning, and whether the clinic admin view is tested separately. | 2026-03-05 | 2026-03-05 | |
 ```
 
@@ -170,10 +172,40 @@ Example:
 }
 ```
 
+## Setup document (`state/setup.json`, board document `setup/state`)
+
+What the setup settled and what is still open. The page reads it for the welcome on the first open and for the Setup button; a board without it shows neither.
+
+```
+{
+ "owner": "Megan",
+ "purpose": "Keep track of what I promised in meetings.",
+ "folder": "Documents/work-notes/task-board",
+ "createdAt": "2026-03-10",
+ "welcomed": false,
+ "steps": [
+  {"id": "calendar", "title": "Calendar", "adds": "Your meetings appear at the top of the page.", "state": "done",
+   "kind": "say", "say": "Connect my calendar to my board", "detail": "Your own calendar"},
+  {"id": "limits", "title": "Limits", "adds": "What Claude may never do without your yes.", "state": "todo",
+   "kind": "answer", "question": "Is there anything else Claude may never do without your yes?",
+   "usual": "The usual list: send, post, publish, create a ticket, send an invite, change a task's status.",
+   "answer": "", "answeredAt": ""}
+ ]
+}
+```
+
+- `owner` is the name Claude calls the person, `purpose` is their own sentence, `folder` is the board folder the way they would recognise it. The page sets `welcomed` when the welcome is closed.
+- A step's `state` is `todo`, `answered` or `done`. `kind` is `say` (the person says the sentence in `say` to Claude; `where` names a connector to switch on first) or `answer` (the person types on the page; `usual` is the choice in force until they do).
+- The page writes `answer`, `answeredAt` and `state: "answered"`, or `state: "done"` with `detail: "The usual"`. Claude applies an answered step and sets it to `done` with a `detail` of a few words.
+- The file also holds `answers`: every answer and usual choice of the setup, by question number. It stays in the file and is not written to the page.
+- The page writes only to the board document. Claude reads that document first, takes its changes into the file, and writes back `steps` alone.
+- The steps (up to ten) and what each changes are in `setup.md`, "Later steps".
+
 ## The page's database
 
 | Collection | Document id | Written by |
 |---|---|---|
+| `setup` | `state` | The setup and later steps; the page (the welcome, an answer typed in the Setup panel); the job when it applies an answer. |
 | `tasks` | The task ID | `sync_tasks.py export` plus a board write; the page on an edit (`dirty: true`, `editedFields` listing what it changed, and `isNew: true` for a task created on the page). |
 | `confirm` | The card `id` | The job (new and applied cards); the page (the answer). |
 | `brief` | `today` | The job, on the first run of the day. |

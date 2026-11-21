@@ -42,11 +42,15 @@ def copy_sample(dest, target=None, shift=True):
     for src in sorted(SAMPLE.rglob("*")):
         if src.is_dir() or src.name.startswith(".") or "out" in src.relative_to(SAMPLE).parts:
             continue
+        if src.name == "README.md":
+            continue   # an index of the kit's sample folder, not sample data
         out = dest / move(src.relative_to(SAMPLE).as_posix())
         if src.name == "board.config.json" and out.exists():
             continue   # the folder already has its own config; keep it
         if src.name == "sweep-sources.json":
             continue   # a shape to copy from, with placeholder ids; the setup writes the real one
+        if src.name == "setup.json":
+            continue   # the sample's own setup state; a real board writes its own
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(move(src.read_text()))
     if days:  # the notes changed, so record again that each summary matches its notes

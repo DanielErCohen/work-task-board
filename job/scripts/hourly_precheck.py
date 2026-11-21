@@ -32,7 +32,11 @@ def config():
     path = Path(explicit) if explicit else next((f / "board.config.json" for f in [Path.cwd(), here, *here.parents] if (f / "board.config.json").exists()), None)
     if not path or not path.exists():
         sys.exit("No board.config.json found. Run from the folder that holds it, or pass --config <path>.")
-    cfg = json.loads(path.read_text())
+    try:
+        cfg = json.loads(path.read_text())
+    except ValueError:
+        print(f"{path}: not valid JSON", file=sys.stderr)
+        sys.exit(2)
     return cfg, path.resolve().parent / cfg.get("state", "state")
 
 
@@ -40,7 +44,10 @@ CFG, STATE = config()
 LOCK = STATE / "run.lock"
 RUN = STATE / "hourly-run.json"
 # Local hours; the first run at or after each one sweeps mail and chat. No hours when sweeps are switched off.
-SWEEP_HOURS = tuple(CFG.get("sweep_hours", [8, 14])) if CFG.get("sweeps", True) else ()
+_HOURS = CFG.get("sweep_hours", [8, 14])
+if not (isinstance(_HOURS, list) and all(isinstance(h, int) and not isinstance(h, bool) for h in _HOURS)):
+    sys.exit('board.config.json: "sweep_hours" must be a list of whole numbers, for example [8, 14]')
+SWEEP_HOURS = tuple(_HOURS) if CFG.get("sweeps", True) else ()
 
 
 def load(path, default):
@@ -109,7 +116,16 @@ def start():
     }, indent=1))
 
 
+def keep_lock():
+    """A long run keeps its lock: refresh its modification time while it works."""
+    try:
+        os.utime(LOCK)
+    except OSError:
+        pass
+
+
 def seen(ids):
+    keep_lock()
     processed = load(STATE / "processed.json", {})
     for source_id in ids:
         if source_id not in processed:
@@ -117,6 +133,7 @@ def seen(ids):
 
 
 def filed(source_id, note_file):
+    keep_lock()
     STATE.mkdir(parents=True, exist_ok=True)
     processed = load(STATE / "processed.json", {})
     processed[source_id] = {"file": note_file, "filedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}
@@ -150,6 +167,7 @@ def finish(brief_written, swept=False, review=False):
 
 
 def board(waiting):
+    keep_lock()
     STATE.mkdir(parents=True, exist_ok=True)
     run = load(RUN, {})
     if waiting:

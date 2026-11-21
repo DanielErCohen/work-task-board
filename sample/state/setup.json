@@ -1,0 +1,115 @@
+{
+  "owner": "Megan",
+  "purpose": "Keep track of what I promised in meetings and what my reports owe me.",
+  "folder": "work-notes/task-board",
+  "createdAt": "2026-03-10",
+  "welcomed": false,
+  "steps": [
+    {
+      "id": "tasks",
+      "title": "Tasks",
+      "adds": "Your own tasks replace the sample.",
+      "state": "done",
+      "kind": "say",
+      "say": "Bring my own tasks into my board",
+      "detail": "10 tasks"
+    },
+    {
+      "id": "calendar",
+      "title": "Calendar",
+      "adds": "Your meetings appear at the top of the page.",
+      "state": "done",
+      "kind": "say",
+      "say": "Connect my calendar to my board",
+      "where": "First switch on Google Calendar in the Claude app: Customize, then Connectors.",
+      "detail": "Google Calendar"
+    },
+    {
+      "id": "job",
+      "title": "Hourly job",
+      "adds": "The board keeps itself up to date.",
+      "state": "done",
+      "kind": "say",
+      "say": "Start the hourly job for my board",
+      "detail": "Weekdays, 08:45 to 18:45"
+    },
+    {
+      "id": "notes",
+      "title": "Meeting notes",
+      "adds": "What you promise in a meeting becomes a task.",
+      "state": "done",
+      "kind": "say",
+      "say": "Add my meeting notes to my board",
+      "where": "For notes that arrive by mail, first switch on Gmail in the Claude app: Customize, then Connectors.",
+      "detail": "Mailed after each meeting"
+    },
+    {
+      "id": "mail",
+      "title": "Mail",
+      "adds": "Requests and promises in your mail become cards.",
+      "state": "todo",
+      "kind": "say",
+      "say": "Add my mail to my board",
+      "where": "First switch on Gmail in the Claude app: Customize, then Connectors.",
+      "detail": ""
+    },
+    {
+      "id": "chat",
+      "title": "Chat",
+      "adds": "The same for the conversations you choose.",
+      "state": "todo",
+      "kind": "say",
+      "say": "Add my chat to my board",
+      "where": "First switch on Slack in the Claude app: Customize, then Connectors.",
+      "detail": ""
+    },
+    {
+      "id": "people",
+      "title": "People",
+      "adds": "Drafts follow the rule you set for each person.",
+      "state": "done",
+      "kind": "answer",
+      "question": "Who do you report to, who reports to you, and who do you meet every week? Names, roles, and any rule for writing to them.",
+      "answer": "",
+      "answeredAt": "",
+      "detail": "Steve, Erin, Josh, Greg",
+      "usual": "The usual: no special rules; Claude writes to everyone the same way."
+    },
+    {
+      "id": "areas",
+      "title": "Work areas",
+      "adds": "Tasks are grouped the way you see your work.",
+      "state": "done",
+      "kind": "answer",
+      "question": "Which three to six areas does your work fall into?",
+      "answer": "",
+      "answeredAt": "",
+      "detail": "Roadmap, delivery, discovery, general",
+      "usual": "The usual: one area, general."
+    },
+    {
+      "id": "limits",
+      "title": "Limits",
+      "adds": "What Claude may never do without your yes.",
+      "state": "todo",
+      "kind": "answer",
+      "question": "Is anything else off limits?",
+      "usual": "The usual list: send, post, publish, create a ticket, send an invite, change a task's status.",
+      "answer": "",
+      "answeredAt": "",
+      "detail": ""
+    },
+    {
+      "id": "preferences",
+      "title": "Preferences",
+      "adds": "Language, how Claude answers you, working hours.",
+      "state": "todo",
+      "kind": "answer",
+      "question": "Which language, how should Claude answer you, and when should the hourly job run?",
+      "usual": "The usual: English, the bottom line first, every hour from 08:45 to 18:45 on weekdays.",
+      "answer": "",
+      "answeredAt": "",
+      "detail": ""
+    }
+  ]
+}

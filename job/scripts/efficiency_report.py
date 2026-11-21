@@ -18,7 +18,12 @@ def state_dir():
     path = Path(explicit) if explicit else next((f / "board.config.json" for f in [Path.cwd(), here, *here.parents] if (f / "board.config.json").exists()), None)
     if not path or not path.exists():
         sys.exit("No board.config.json found. Run from the folder that holds it, or pass --config <path>.")
-    return path.resolve().parent / json.loads(path.read_text()).get("state", "state")
+    try:
+        cfg = json.loads(path.read_text())
+    except ValueError:
+        print(f"{path}: not valid JSON", file=sys.stderr)
+        sys.exit(2)
+    return path.resolve().parent / cfg.get("state", "state")
 
 
 def parse(ts):

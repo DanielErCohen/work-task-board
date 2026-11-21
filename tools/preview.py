@@ -21,7 +21,7 @@ dates and carries the day they were written for; when a visitor opens the page, 
 date by the distance from that day to the visitor's today, so the page never ages. A line at the top says
 the data is made up and that edits stay in the tab. The demo opens in light mode; ?theme=dark switches it. With --data the dates are left as they are.
 """
-import http.server, json, subprocess, sys, tempfile
+import http.server, json, shutil, subprocess, sys, tempfile
 from functools import partial
 from pathlib import Path
 
@@ -67,6 +67,16 @@ STUB = r"""
     if (opts && opts.onText) opts.onText({ text });
     return { text };
   }, { limits: async () => ({ tools: true }) });
+  if (builtFor) {   // static demo: the welcome says it is the sample's, and the Setup panel says nothing is applied here
+    const swap = [["Saved. Claude applies it within the hour.", "Saved in this tab only. On your own board, Claude applies it within the hour."],
+                  ["Saved. Claude applies it the next time you talk to it in your board folder.", "Saved in this tab only. On your own board, Claude applies it the next time you talk to it."],
+                  ["In the Claude app, open the Code tab,", "On your own board: in the Claude app, open the Code tab,"]];
+    new MutationObserver(() => {
+      const wt = document.getElementById("wTitle");
+      if (wt && !document.getElementById("demoWelcome")) wt.insertAdjacentHTML("afterend", '<p id="demoWelcome" style="margin:6px 0 0;font-size:13.5px;color:var(--text-muted)">The sample\'s welcome: Megan and everything on this board are invented.</p>');
+      for (const el of document.querySelectorAll("#drawer .sline")) for (const [a, b] of swap) if (el.innerHTML.startsWith(a)) el.innerHTML = b + el.innerHTML.slice(a.length);
+    }).observe(document.documentElement, { childList: true, subtree: true });
+  }
   window.claude = { use: async (name) => name === "db" ? db : name === "user" ? { can: async () => true } : name === "sample" && q.get("ask") !== "off" ? sample : null };
 })();
 </script>
@@ -77,9 +87,10 @@ BANNER = """<div style="padding:8px 16px;text-align:center;font:13px/1.4 var(--f
 """
 
 
-def build(data, owner="", built_for=None, about=""):
+def build(data, owner="", built_for=None, about="", setup=None):
     """Return the preview page for the board folder `data`. `owner` replaces the name in the page's config block.
-    `built_for` (an ISO day) makes a static demo: the page moves the data's dates to the visitor's today and shows a sample notice."""
+    `built_for` (an ISO day) makes a static demo: the page moves the data's dates to the visitor's today and shows a sample notice.
+    `setup` is the setup document to show; by default the folder's own state/setup.json, when it has one."""
     cfg_path = data / "board.config.json"
     if not cfg_path.exists():
         sys.exit(f"{data} holds no board.config.json")
@@ -88,10 +99,13 @@ def build(data, owner="", built_for=None, about=""):
     subprocess.run([sys.executable, str(KIT / "board" / "sync_tasks.py"), "--config", str(cfg_path), "--out", str(out), "export"], check=True, stdout=subprocess.DEVNULL)
     read = lambda p: json.loads(p.read_text())
     state = data / cfg.get("state", "state")
+    setup = setup or state / "setup.json"
     seed = {"tasks": {p.stem: read(p) for p in sorted(out.glob("*.json"))},
             "confirm": {c["id"]: c for c in (read(p) for p in sorted((state / "confirm-queue").glob("*.json")))},
             "brief": {"today": read(state / "brief-today.json")} if (state / "brief-today.json").exists() else {},
-            "prep": {}}
+            "prep": {},
+            "setup": {"state": read(setup)} if setup and setup.exists() else {}}
+    shutil.rmtree(out, ignore_errors=True)   # the export folder is only needed to build the seed
     page = (KIT / "board" / "tasks-board.html").read_text()
     local = data / "board" / "tasks-board.html"   # a set-up folder has its own copy with its own config block
     if local.exists():
@@ -109,7 +123,7 @@ if __name__ == "__main__":
         print(__doc__)
         sys.exit(0)
     opt = lambda name, default=None: args[args.index(name) + 1] if name in args and args.index(name) + 1 < len(args) else default
-    owner, built_for = "", None
+    owner, built_for, made, setup = "", None, [], None   # `made`: temporary folders to remove once the page is written
     static = "--no-serve" in args
     if opt("--data"):
         data = Path(opt("--data")).resolve()
@@ -117,22 +131,33 @@ if __name__ == "__main__":
         sys.path.insert(0, str(KIT / "tools"))
         from load_sample import copy_sample
         data = Path(tempfile.mkdtemp(prefix="board-sample-"))
+        made.append(data)
         if static:   # a static demo keeps the sample's own dates; the page moves them to each visitor's today
             copy_sample(data, shift=False)
             built_for = json.loads((data / "state" / "brief-today.json").read_text())["date"]
         else:
             copy_sample(data)
         owner = "Megan Clark"   # the invented owner of the sample
+        setup = KIT / "sample" / "state" / "setup.json"   # load_sample.py never copies it into a board folder
     elif (KIT / "board.config.json").exists():
         data = KIT
     else:
         sys.exit("No sample folder and no board.config.json here. Pass --data <board folder>.")
+    site_is_temp = not opt("--out")
     site = Path(opt("--out") or tempfile.mkdtemp(prefix="board-site-")).resolve()
     site.mkdir(parents=True, exist_ok=True)
-    (site / "index.html").write_text(build(data, owner, built_for, opt("--about", "")))
+    (site / "index.html").write_text(build(data, owner, built_for, opt("--about", ""), setup))
+    for d in made:
+        shutil.rmtree(d, ignore_errors=True)
     if static:
         print(f"wrote {site / 'index.html'}")
         sys.exit(0)
     port = int(opt("--port", "8765"))
     print(f"Board preview: http://localhost:{port}/   (Ctrl+C to stop)")
-    http.server.ThreadingHTTPServer(("127.0.0.1", port), partial(http.server.SimpleHTTPRequestHandler, directory=str(site))).serve_forever()
+    try:
+        http.server.ThreadingHTTPServer(("127.0.0.1", port), partial(http.server.SimpleHTTPRequestHandler, directory=str(site))).serve_forever()
+    except KeyboardInterrupt:
+        pass
+    finally:
+        if site_is_temp:
+            shutil.rmtree(site, ignore_errors=True)

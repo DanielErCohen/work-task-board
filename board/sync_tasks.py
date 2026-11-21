@@ -94,7 +94,11 @@ def configure(argv):
     if cfg_path:
         if not cfg_path.exists():
             sys.exit(f"config file not found: {cfg_path}")
-        CFG = json.loads(cfg_path.read_text())
+        try:
+            CFG = json.loads(cfg_path.read_text())
+        except ValueError:
+            print(f"{cfg_path}: not valid JSON", file=sys.stderr)
+            sys.exit(2)
         ROOT = cfg_path.resolve().parent
     elif "tasks" in opts:
         ROOT = Path(opts["tasks"]).resolve().parent
@@ -106,7 +110,12 @@ def configure(argv):
     OUT = pick("out", "board/out/docs")
     if CFG.get("statuses"):
         STATUSES = list(CFG["statuses"])
+        for s in CFG.get("open_statuses", []):
+            if s not in STATUSES:
+                sys.exit(f"{cfg_path}: open_statuses entry '{s}' is not in statuses")
         OPEN_STATUSES = [s for s in CFG.get("open_statuses", STATUSES[:-2]) if s in STATUSES]
+    if CFG.get("new_status") and CFG["new_status"] not in OPEN_STATUSES:
+        sys.exit(f"{cfg_path}: new_status '{CFG['new_status']}' is not an open status")
     if not TASKS.exists():
         sys.exit(f"task table not found: {TASKS}")
     return rest
@@ -192,7 +201,7 @@ def refs_for(notes, idx):
 
     for slug in re.findall(r"\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]", notes):
         path = idx.get(slug)
-        kind = "meeting" if re.match(r"\d{4}-\d{2}-\d{2}_", slug) else (
+        kind = "meeting" if re.match(r"\d{4}-\d{2}-\d{2}[_-]", slug) else (
             "person" if path and "/people/" in path else "note")
         add(kind, slug, link(path))
     kind_of = lambda u: "artifact" if "claude.ai" in u else "doc" if "docs.google.com" in u else "link"
@@ -217,6 +226,26 @@ def is_day(v):
     return True
 
 
+def stray_table_lines(lines):
+    """(line number, first cell) of every line of the task table that is not a task row, a header or a separator.
+    The task table is the unbroken block of lines starting with a pipe that holds the ID header or a task row."""
+    out, i = [], 0
+    while i < len(lines):
+        if not lines[i].startswith("|"):
+            i += 1
+            continue
+        j = i
+        while j < len(lines) and lines[j].startswith("|"):
+            j += 1
+        if any(ROW_RE.match(l) or split_cells(l)[0] == "ID" for l in lines[i:j]):
+            for n in range(i, j):
+                first = split_cells(lines[n])[0]
+                if not (ROW_RE.match(lines[n]) or first == "ID" or re.match(r"^\|[\s:|-]+$", lines[n].strip())):
+                    out.append((n + 1, first))
+        i = j
+    return out
+
+
 def check():
     """Return the list of problems in tasks.md; an empty list means every row is well formed.
 
@@ -224,7 +253,10 @@ def check():
     anything, so a malformed row (a note written into the due cell, a pipe inside a cell) never
     reaches the board."""
     problems, seen = [], set()
-    for n, line in enumerate(TASKS.read_text().split("\n"), 1):
+    all_lines = TASKS.read_text().split("\n")
+    for n, first in stray_table_lines(all_lines):
+        problems.append(f"line {n}: '{first[:40]}' is not a task ID (T and digits), so this line of the table is ignored")
+    for n, line in enumerate(all_lines, 1):
         if not ROW_RE.match(line):
             continue
         cells = split_cells(line)
@@ -269,9 +301,12 @@ def export():
     check_or_exit("nothing was exported")
     _, rows = read_rows()
     idx = index_files()
+    if OUT.resolve() == ROOT.resolve() or (OUT / "board.config.json").exists():
+        sys.exit(f"export refused: {OUT} is the board folder or holds board.config.json")
     OUT.mkdir(parents=True, exist_ok=True)
-    for f in OUT.glob("*.json"):
-        f.unlink()
+    for f in OUT.glob("T*.json"):
+        if re.fullmatch(r"T\d+\.json", f.name):
+            f.unlink()
     for r in rows:
         doc = {k: r[k] for k in COLS}
         doc["raci"], doc["poc"], doc["notes"] = split_owner(doc["notes"])
@@ -411,6 +446,7 @@ def import_(src):
 
 def stale():
     """Open tasks whose summary is missing or was written from older notes."""
+    check_or_exit("stale was not run")
     _, rows = read_rows()
     out = []
     for r in rows:
@@ -426,6 +462,7 @@ def stale():
 
 def stamp(ids):
     """Record that these tasks' summaries match their current notes."""
+    check_or_exit("nothing was stamped")
     _, rows = read_rows()
     by_id = {r["id"]: r for r in rows}
     done = []
