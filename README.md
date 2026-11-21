@@ -8,10 +8,12 @@ Every person, company and figure in the picture is invented.
 
 ## Set it up
 
-1. Download the kit: on this repository's page press **Code**, then **Download ZIP**, and double-click the ZIP file so you have the folder `work-task-board-main`. Leaving it in your Downloads folder is fine. If you use git, clone the repository instead.
+1. Download the kit: on this repository's page press **Code**, then **Download ZIP**, and double-click the ZIP file so you have the folder `work-task-board-main`. On Windows, right-click the ZIP file and choose **Extract All** instead; a double-click only opens it. Leaving it in your Downloads folder is fine. If you use git, clone the repository instead.
 2. In the Claude desktop app, open the Code tab, start a new session (**+ New**), choose a folder for it (your Documents folder is fine; Claude makes its own folders inside) and paste this one line:
 
 > Read setup.md in the work-task-board folder I downloaded and set up my work board. Interview me first, one question at a time, and build nothing until I confirm your summary.
+
+On a Mac, the app may ask whether Claude can open your Downloads or Documents folder: choose **Allow**, or Claude cannot read the kit. If you declined, switch it on in System Settings, Privacy & Security, Files and Folders, under Claude.
 
 When Claude cannot find the folder, it says so and stops. Paste the line again with the folder's full path in place of "the work-task-board folder I downloaded".
 
@@ -44,7 +46,7 @@ You do not have to check any of this yourself. The setup tests each item on your
 | A page with its own data store | Claude can publish a private page on claude.ai that only you can open (Claude calls it an artifact) and that keeps your tasks in a small database | The setup stops and says so; the board cannot work |
 | Ask Claude on the page | The page's permission to call Claude | The page shows a New task button instead; the rest works |
 | A scheduled task | A prompt Claude Code runs by itself at set times | You start the job by saying "run the board job" |
-| Python 3.9 or later | The language the kit's small scripts are written in; Claude runs them for you | The setup stops and tells you what to install |
+| Python 3.9 or later | The language the kit's small scripts are written in; Claude runs them for you | On a Mac without it, macOS offers to install Apple's command line developer tools, which include it: choose Install and tell Claude when it has finished. Otherwise the setup stops and tells you what to install |
 | Google Calendar, Gmail and Slack connected to Claude | The links (connectors) that let Claude read them; you switch them on in the Claude app under Customize, then Connectors | Each one switches on a part of the job; the board works without them, and the meeting rows at the top stay empty without the calendar |
 
 ## What stays private

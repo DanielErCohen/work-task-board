@@ -38,6 +38,9 @@ What changed in each version of the kit, what has been tested and what has not. 
 - The new questions with their sources switched on: a calendar with the rule for which meetings count, and existing tasks read from a Google Doc, a Sheet or a tracker. A text file and a pasted sheet were imported in the persona runs.
 - `tools/preview.py` removing its temporary folder when the preview server stops.
 - A second account, and an account on another Claude plan.
+- The download path on a Mac: macOS asking whether the Claude app may open `Downloads` or `Documents`, and what the setup says after the person declines.
+- A Mac with no working Python: the window that offers Apple's command line developer tools, and the setup going on after the install.
+- Windows: a ZIP file opened by double-click without being extracted, and the setup as a whole on Windows.
 - The start of the corrected hourly job from the scheduler, and the permission questions of a first job run.
 - Ask Claude on a newly set-up page.
 - Gmail, Slack and Google Calendar as sources outside the author's own board.
