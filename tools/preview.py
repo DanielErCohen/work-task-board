@@ -36,9 +36,11 @@ STUB = r"""
   const builtFor = __BUILT_FOR__;   // static demo only: the day the sample's dates were written for
   let seed = __SEED__;
   const q = new URLSearchParams(location.search);
+  let monday = "";   // static demo on a weekend: the sentence that says which day is shown
   if (builtFor) {   // on a weekend the sample is a working day: run the page's clock on the coming Monday
     const Real = Date, now = new Real(), skip = { 6: 2, 0: 1 }[now.getDay()] || 0;
     if (skip) {
+      monday = " On a weekend the board shows the coming Monday.";
       const ahead = new Real(now.getFullYear(), now.getMonth(), now.getDate() + skip, now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()) - now;
       window.Date = class extends Real {
         constructor(...a) { if (a.length) super(...a); else super(Real.now() + ahead); }
@@ -85,7 +87,7 @@ STUB = r"""
                   ["In the Claude app, open the Code tab,", "On your own board: in the Claude app, open the Code tab,"]];
     new MutationObserver(() => {
       const wt = document.getElementById("wTitle");
-      if (wt && !document.getElementById("demoWelcome")) wt.insertAdjacentHTML("afterend", '<p id="demoWelcome" style="margin:6px 0 0;font-size:13.5px;color:var(--text-muted)">The sample\'s welcome: Megan and everything on this board are invented.</p>');
+      if (wt && !document.getElementById("demoWelcome")) wt.insertAdjacentHTML("afterend", '<p id="demoWelcome" style="margin:6px 0 0;font-size:13.5px;color:var(--text-muted)">The sample\'s welcome: Megan and everything on this board are invented.' + monday + '</p>');
       for (const el of document.querySelectorAll("#drawer .sline")) for (const [a, b] of swap) if (el.innerHTML.startsWith(a)) el.innerHTML = b + el.innerHTML.slice(a.length);
     }).observe(document.documentElement, { childList: true, subtree: true });
   }
