@@ -36,7 +36,7 @@ So far only the author's own Claude sessions have run this setup. No other perso
 - **A task list in plain text.** One table in a file called `tasks.md`, in your own notes folder. The page shows a copy of it. Each task opens to a description, the last decision, its history and its sources.
 - **An Ask Claude box on the page.** You add, change or close a task by writing one sentence.
 - **An hourly job on your computer.** It files your Gemini meeting notes, reads Gmail and Slack twice a day for requests and promises, checks your calendar, applies the answers you gave on the page and writes the morning's page. It reads, files and prepares. It never sends, posts or publishes; a message you approve goes out from your next chat with Claude, or stays a text for you to copy when you prefer to send everything yourself. It runs while the Claude app is open and your computer is awake.
-- **A rules file in your words.** `BRAIN.md` holds how Claude works for you: prepare first, ask second, and never act on the list you set without your yes. The setup writes it from your answers, and you can change it at any time.
+- **A rules file in your words.** `BRAIN.md` holds how Claude works for you: prepare first, ask second, and never act on the list you set without your yes. The setup writes it from your answers. You can change it at any time.
 
 ## What is checked for you
 

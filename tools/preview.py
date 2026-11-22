@@ -18,7 +18,8 @@ computer and nothing is written to your files.
 
 --no-serve --out with the sample writes a static demo that can sit on any web host. It keeps the sample's own
 dates and carries the day they were written for; when a visitor opens the page, the stand-in moves every
-date by the distance from that day to the visitor's today, so the page never ages. A line at the top says
+date by the distance from that day to the visitor's today, so the page never ages. On a Saturday or Sunday the
+demo runs its clock on the coming Monday, because the sample is a working day. A line at the top says
 the data is made up and that edits stay in the tab. The demo opens in light mode; ?theme=dark switches it. With --data the dates are left as they are.
 """
 import http.server, json, shutil, subprocess, sys, tempfile
@@ -35,7 +36,18 @@ STUB = r"""
   const builtFor = __BUILT_FOR__;   // static demo only: the day the sample's dates were written for
   let seed = __SEED__;
   const q = new URLSearchParams(location.search);
-  if (builtFor) {   // move every date in the data by (the visitor's today minus that day), so the sample day is always today
+  if (builtFor) {   // on a weekend the sample is a working day: run the page's clock on the coming Monday
+    const Real = Date, now = new Real(), skip = { 6: 2, 0: 1 }[now.getDay()] || 0;
+    if (skip) {
+      const ahead = new Real(now.getFullYear(), now.getMonth(), now.getDate() + skip, now.getHours(), now.getMinutes(), now.getSeconds(), now.getMilliseconds()) - now;
+      window.Date = class extends Real {
+        constructor(...a) { if (a.length) super(...a); else super(Real.now() + ahead); }
+        static now() { return Real.now() + ahead; }
+      };
+      addEventListener("DOMContentLoaded", () => { const m = document.getElementById("demoMonday"); if (m) m.hidden = false; });
+    }
+  }
+  if (builtFor) {   // move every date in the data by (the page's today minus that day), so the sample day is always today
     const utc = (y, m, d) => Date.UTC(+y, +m - 1, +d), t = new Date();
     const delta = Math.round((utc(t.getFullYear(), t.getMonth() + 1, t.getDate()) - utc(...builtFor.split("-"))) / 864e5);
     const move = (m, y, mo, d) => {
@@ -83,7 +95,7 @@ STUB = r"""
 """
 
 
-BANNER = """<div style="padding:8px 16px;text-align:center;font:13px/1.4 var(--font, system-ui, sans-serif);background:var(--primary-light, #E7ECFF);color:var(--text, #1b1f2a);border-bottom:1px solid var(--border, #d0d5e2)">This is a made-up sample board. Every person and figure is invented. Your edits stay in this browser tab, and Ask Claude answers with a fixed line here.__ABOUT__</div>
+BANNER = """<div style="padding:8px 16px;text-align:center;font:13px/1.4 var(--font, system-ui, sans-serif);background:var(--primary-light, #E7ECFF);color:var(--text, #1b1f2a);border-bottom:1px solid var(--border, #d0d5e2)">This is a made-up sample board. Every person and figure is invented. Your edits stay in this browser tab. Ask Claude answers with a fixed line here.<span id="demoMonday" hidden> On a weekend the board shows the coming Monday.</span>__ABOUT__</div>
 """
 
 
@@ -114,7 +126,7 @@ def build(data, owner="", built_for=None, about="", setup=None):
         page = page.replace("</script>", "</script>\n<script>window.BOARD_CONFIG.owner = " + json.dumps(owner) + ";</script>", 1)
     stub = STUB.replace("__BUILT_FOR__", json.dumps(built_for)).replace("__SEED__", json.dumps(seed, ensure_ascii=False).replace("</", "<\\/"))
     more = ' <a href="' + about.replace('"', '%22') + '" style="color:inherit;font-weight:600">Set up your own</a>' if about else ""
-    return '<!doctype html>\n<html lang="en">\n<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">\n</head>\n<body>\n' + stub + (BANNER.replace("__ABOUT__", more) if built_for else "") + page + "\n</body>\n</html>\n"
+    return '<!doctype html>\n<html lang="en">\n<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="icon" href="data:,">\n</head>\n<body>\n' + stub + (BANNER.replace("__ABOUT__", more) if built_for else "") + page + "\n</body>\n</html>\n"
 
 
 if __name__ == "__main__":
