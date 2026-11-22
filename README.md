@@ -4,7 +4,7 @@ A private task board that Claude keeps for you. You open one page in the morning
 
 ![The board in a desktop browser: the Now block with two reminders and one card, Unblock others, the day's three meetings with the first one opened, two deadlines and the Focus line.](docs/img/board-desktop.png)
 
-Every person, company and figure in the picture is invented.
+Every person, company and figure in the picture is invented. See the same sample in your browser, with nothing to install: https://danielercohen.github.io/ai-pm/toolkit/work-task-board-demo/
 
 ## Set it up
 
@@ -54,6 +54,8 @@ You do not have to check any of this yourself. The setup tests each item on your
 ## What stays private
 
 Your tasks, notes, cards and morning page live in your own notes folder and in your own private page. The kit folder holds none of it, so it can be shared as it is.
+
+What a connector reads goes to Claude, like anything you paste into a chat. Check your company's AI and data policy before you connect a work account. The rules the job follows are on the [board's page](https://danielercohen.github.io/ai-pm/toolkit/work-task-board.html#work-account-h) under "Before you connect work mail or chat".
 
 ## What is in the folder
 
