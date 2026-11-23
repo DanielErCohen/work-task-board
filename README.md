@@ -70,7 +70,7 @@ What a connector reads goes to Claude, like anything you paste into a chat. Chec
 | [docs/](docs/README.md) | The formats of a task row, a task summary, a card and the morning page, and three pictures of the board |
 | [sample/](sample/README.md) | Ten invented tasks, five cards and one invented day, to try the board before you use your own data |
 | `tools/` | `preview.py` shows the page on your own computer and publishes nothing; `load_sample.py` copies the sample into a board folder with its dates moved to today |
-| `tests/` | The automated checks of the scripts, the page's code and the templates; they run on every change on Mac, Windows and Linux |
+| `tests/` | The automated checks of the scripts, the page's code and the templates. Run them in the kit folder with `python3 -m unittest discover -s tests` |
 | [SECURITY.md](SECURITY.md) | How to report a security problem, and what the kit does with your data |
 | `LICENSE` | MIT |
 

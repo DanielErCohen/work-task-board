@@ -5,7 +5,7 @@ What changed in each version of the kit, what has been tested and what has not. 
 ## Versions
 
 - **1.0.0, 2026-11-23, the first release:** the kit gets automated checks, a security policy and fixes from an independent code review.
-  - **Checks:** 40 automated tests in `tests/` (the scripts on the sample, a round trip through the page's format, the job's lock, the preview, every placeholder documented, every link and JSON file valid, the page's code parses) run on every change on Mac, Windows and Linux with Python 3.9 and 3.13.
+  - **Checks:** 40 automated tests in `tests/` (the scripts on the sample, a round trip through the page's format, the job's lock, the preview, every placeholder documented, every link and JSON file valid, the page's code parses), run with `python3 -m unittest discover -s tests`. A GitHub workflow that runs them on Mac, Windows and Linux with Python 3.9 and 3.13 is included and has not run yet.
   - **Windows:** every script reads and writes UTF-8 and keeps line endings as they are; before, a name such as "Álvaro" stopped the scripts on Windows, and the preview could not start there.
   - **Your tasks are safer:** `tasks.md` is written in one step with a backup (`tasks.md.bak`) before each import; `check` fails on a row that starts with a space instead of skipping it; `import` refuses a missing folder, an empty title and a task deleted from `tasks.md`; `export` refuses a folder that holds other files; `plan` warns about page edits not imported yet.
   - **The hourly job:** a damaged queue or state file is skipped or reported, never wipes the record of filed notes, and never leaves the run lock behind.
@@ -55,6 +55,7 @@ What changed in each version of the kit, what has been tested and what has not. 
 
 ## Not yet tested
 
+- The automated tests on Windows and Linux, and on Python 3.13: so far they ran on a Mac only, with Python 3.9.6 and 3.12.
 - The questions about your tools with a real person, and with a real Microsoft 365 account. No Outlook, Teams or OneDrive connector was found in the connector directory searched on 2026-11-23, so the Microsoft route was run with no connectors only.
 - A person running the setup. Every run so far was a Claude session answering from a written sheet or playing a person, so no setup time for a person is known.
 - The third release with a real calendar: the first day's meetings written by the setup, a Setup step finished by saying its sentence, and an answer typed on the page being applied by the hourly job.
