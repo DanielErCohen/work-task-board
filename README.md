@@ -20,7 +20,7 @@ When Claude cannot find the folder, it says so and stops. Paste the line again w
 What happens after you paste it:
 
 1. Claude finds the kit folder and works from it. When the kit sits in a git repository, Claude copies it to a working folder first, so the repository stays as it is.
-2. It asks three questions (your name, what the board is for, how you want to start) and offers one connection, your calendar, so your page shows today's meetings from the start. You can stop at any point: say "that's enough" and it goes on with what you gave and the usual choice for the rest.
+2. It asks four questions (your name, which tools you use, what the board is for, how you want to start) and offers one connection, your calendar, so your page shows today's meetings from the start. You can stop at any point: say "that's enough" and it goes on with what you gave and the usual choice for the rest.
 3. It reads back what it will build. Nothing is built until you confirm that list.
 4. It builds your board folder and your private page, then asks once more before it switches on the hourly job.
 5. Your page welcomes you by name. Its **Setup** button lists what is still open, such as your mail, your chat, the people you work with and your limits, and how to add each one when you want it.
@@ -31,11 +31,11 @@ So far only the author's own Claude sessions have run this setup. No other perso
 
 ## What you get
 
-- **One page that follows your day.** At the top: **Now** (reminders and the decisions a date depends on), **Unblock others** (quick answers that let someone else start work), **The day** (one row per meeting from your Google Calendar, with what you owe, what to ask and what to decide together), **Deadlines** and your three tasks to **Focus** on. Below it, every task, grouped and searchable.
+- **One page that follows your day.** At the top: **Now** (reminders and the decisions a date depends on), **Unblock others** (quick answers that let someone else start work), **The day** (one row per meeting from your calendar, with what you owe, what to ask and what to decide together), **Deadlines** and your three tasks to **Focus** on. Below it, every task, grouped and searchable.
 - **Decisions prepared for you.** Each one arrives as a card: a drafted message, a comparison table, free time slots or a plain question, with a recommendation. You pick an option and press Send.
 - **A task list in plain text.** One table in a file called `tasks.md`, in your own notes folder. The page shows a copy of it. Each task opens to a description, the last decision, its history and its sources.
 - **An Ask Claude box on the page.** You add, change or close a task by writing one sentence.
-- **An hourly job on your computer.** It files your Gemini meeting notes, reads Gmail and Slack twice a day for requests and promises, checks your calendar, applies the answers you gave on the page and writes the morning's page. It reads, files and prepares. It never sends, posts or publishes; a message you approve goes out from your next chat with Claude, or stays a text for you to copy when you prefer to send everything yourself. It runs while the Claude app is open and your computer is awake.
+- **An hourly job on your computer.** It files your meeting notes (by default the notes Gemini mails after a Google Meet call), reads your mail and chat (Gmail and Slack by default) twice a day for requests and promises, checks your calendar, applies the answers you gave on the page and writes the morning's page. It reads, files and prepares. It never sends, posts or publishes; a message you approve goes out from your next chat with Claude, or stays a text for you to copy when you prefer to send everything yourself. It runs while the Claude app is open and your computer is awake.
 - **A rules file in your words.** `BRAIN.md` holds how Claude works for you: prepare first, ask second, and never act on the list you set without your yes. The setup writes it from your answers. You can change it at any time.
 
 ## What is checked for you
@@ -49,7 +49,7 @@ You do not have to check any of this yourself. The setup tests each item on your
 | Ask Claude on the page | The page's permission to call Claude | The page shows a New task button instead; the rest works |
 | A scheduled task | A prompt Claude Code runs by itself at set times | You start the job by saying "run the board job" |
 | Python 3.9 or later | The language the kit's small scripts are written in; Claude runs them for you | On a Mac without it, macOS offers to install Apple's command line developer tools, which include it: choose Install, then Agree, and tell Claude when it has finished. On Windows, install it from python.org before you start, and tick "Add python.exe to PATH" in the installer. Otherwise the setup stops and tells you what to install |
-| Google Calendar, Gmail and Slack connected to Claude | The links (connectors) that let Claude read them; you switch them on in the Claude app under Customize, then Connectors | Each one switches on a part of the job; the board works without them, and the meeting rows at the top stay empty without the calendar |
+| Your calendar, mail and chat connected to Claude (Google Calendar, Gmail and Slack by default) | The links (connectors) that let Claude read them; the setup asks which tools you use and tells you which ones Claude cannot read yet; you switch them on in the Claude app under Customize, then Connectors | Each one switches on a part of the job; the board works without them, and the meeting rows at the top stay empty without the calendar |
 
 ## What stays private
 
@@ -61,7 +61,7 @@ What a connector reads goes to Claude, like anything you paste into a chat. Chec
 
 | Item | What it is for |
 |---|---|
-| [setup.md](setup.md) | The instructions Claude follows to build your board: a first sitting of three questions and one connection, the full list of 17 questions, and the later steps behind the page's Setup button |
+| [setup.md](setup.md) | The instructions Claude follows to build your board: a first sitting of four questions and one connection, the full list of 19 questions, and the later steps behind the page's Setup button |
 | [update.md](update.md) | For a board that already exists: the instructions Claude follows to bring it to this version of the kit |
 | [versions-and-tests.md](versions-and-tests.md) | What changed in each version, what has been tested and what has not |
 | [board/](board/README.md) | The page, the script that keeps the page and `tasks.md` in step, and the template of the rules file |

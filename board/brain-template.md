@@ -1,4 +1,4 @@
-# Work task board brain
+# Task board brain
 
 <!-- TEMPLATE. setup.md fills every {{PLACEHOLDER}} from the interview and deletes these comments.
      The rules without a placeholder are the method itself. Keep them unless the owner says otherwise. -->
@@ -8,6 +8,8 @@ How Claude works on {{OWNER_NAME}}'s task board. Every session that touches the 
 ## What the board is for
 
 - {{OWNER_FIRST}}'s words: "{{PURPOSE}}"
+<!-- Questions 18 and 19 of the interview, as one line. -->
+- Systems: {{SYSTEMS}}
 - {{OWNER_FIRST}} works with Claude mainly through the board. Keep each item short on screen, with the full text one click away.
 
 ## Be very proactive

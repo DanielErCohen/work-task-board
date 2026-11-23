@@ -19,7 +19,7 @@ Scripts: `job/scripts/hourly_precheck.py`, `job/scripts/efficiency_report.py`, `
 
 1. `python3 -B job/scripts/hourly_precheck.py start`. If it prints `BUSY`, another run is writing: stop silently. Otherwise it prints `first_run_today`, `notes_after`, `unsynced_queue_items`, `brief_written_today`, `sweep_due` with `sweep_since`, `sweep_since_unix` and `mail_sweep_after`, `board_write_waiting_since` and `review_due`.
 <!-- BEGIN OPTION meeting-notes-mail -->
-2. Meeting notes by mail (for example the notes Gemini writes in Google Meet): search the mail connector for `from:{{NOTES_SENDER}} after:<notes_after>`. Pass the ID of every linked document to `hourly_precheck.py seen <id> ...`; it prints the ones not filed yet.
+2. Meeting notes by mail ({{NOTES_SOURCE_LABEL}}): search the mail connector for `from:{{NOTES_SENDER}} after:<notes_after>`; with a mail connector other than Gmail, search for that sender with the connector's own date filter set to `notes_after`. Pass the ID of every linked document to `hourly_precheck.py seen <id> ...`; it prints the ones not filed yet.
 <!-- END OPTION meeting-notes-mail -->
 <!-- BEGIN OPTION meeting-notes-folder -->
 2. Meeting notes in a folder: list the files in `{{NOTES_INBOX}}` and pass each file name to `hourly_precheck.py seen <name> ...`; it prints the ones not filed yet. Leave the files where they are.
@@ -94,11 +94,11 @@ Read `state/sweep-sources.json` first; it lists the sources and the item cap. Th
 <!-- END OPTION sweep-rules -->
 <!-- BEGIN OPTION mail-sweep -->
 
-**Mail (Gmail).** Search `<mail_inbox_query> after:<mail_sweep_after>` and `<mail_sent_query> after:<mail_sweep_after>`. Judge from subject and snippet; open a thread only when it shows a request to {{OWNER_FIRST}}, a promise by {{OWNER_FIRST}} or a date. Ignore anything older than `sweep_since`.
+**Mail ({{MAIL_TOOL}}).** Search `<mail_inbox_query> after:<mail_sweep_after>` and `<mail_sent_query> after:<mail_sweep_after>`. With a mail connector other than Gmail, run the two queries in that connector's own form, with its date filter set to `mail_sweep_after`. Judge from subject and snippet; open a thread only when it shows a request to {{OWNER_FIRST}}, a promise by {{OWNER_FIRST}} or a date. Ignore anything older than `sweep_since`.
 <!-- END OPTION mail-sweep -->
 <!-- BEGIN OPTION chat-sweep -->
 
-**Chat (Slack).** For each entry under `chat` in `state/sweep-sources.json`, read that conversation from `sweep_since_unix` with the chat connector's read tool. Open a thread only when its first message is a candidate. Use no other chat tool: search and send are not approved for this job and would stall the run. Read every message in the window, to the last one, {{OWNER_FIRST}}'s own included. A late status update from a colleague is news on the open task it touches, even when an earlier message in the same conversation already produced a candidate. Keep who does what exactly as written.
+**Chat ({{CHAT_TOOL}}).** For each entry under `chat` in `state/sweep-sources.json`, read that conversation from `sweep_since_unix` with the chat connector's read tool. Open a thread only when its first message is a candidate. Use no other chat tool: search and send are not approved for this job and would stall the run. Read every message in the window, to the last one, {{OWNER_FIRST}}'s own included. A late status update from a colleague is news on the open task it touches, even when an earlier message in the same conversation already produced a candidate. Keep who does what exactly as written.
 <!-- END OPTION chat-sweep -->
 
 ## 5. Morning brief, once a day

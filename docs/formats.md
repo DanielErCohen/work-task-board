@@ -197,7 +197,7 @@ What the setup settled and what is still open. The page reads it for the welcome
 - `owner` is the name Claude calls the person, `purpose` is their own sentence, `folder` is the board folder the way they would recognise it. The page sets `welcomed` when the welcome is closed.
 - A step's `state` is `todo`, `answered` or `done`. `kind` is `say` (the person says the sentence in `say` to Claude; `where` names a connector to switch on first) or `answer` (the person types on the page; `usual` is the choice in force until they do).
 - The page writes `answer`, `answeredAt` and `state: "answered"`, or `state: "done"` with `detail: "The usual"`. Claude applies an answered step and sets it to `done` with a `detail` of a few words.
-- The file also holds `answers`: every answer and usual choice of the setup, by question number. It stays in the file and is not written to the page.
+- The file also holds `answers`: every answer and usual choice of the setup, by question number (1 to 19). Question 18 is an object: `use`, `calendar`, `mail`, `chat`, `notes` and `readable` (`setup.md`, question 18). A file without it is read as work use with Google Calendar, Gmail, Gemini notes by mail and Slack. It stays in the file and is not written to the page.
 - The page writes only to the board document. Claude reads that document first, takes its changes into the file, and writes back `steps` alone.
 - The steps (up to ten) and what each changes are in `setup.md`, "Later steps".
 

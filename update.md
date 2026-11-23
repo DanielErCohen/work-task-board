@@ -113,3 +113,10 @@ A board that is already set up needs nothing: without a setup document the page 
 1. Do step 2 of this file for the page and item 3 of the section above for the job file, taking the "Setup answers" bullet, the changed precheck item and the changed rule from the kit's `job/job-template.md`.
 2. Copy the kit's `setup.md`, `job/job-template.md` and `board/brain-template.md` into `docs/kit/` in the board folder, and add the fourth line of step 2 item 4 of `setup.md` to the board's `CLAUDE.md`. Copy the "Setup answers" bullet and the "Setup steps" row from `board/brain-template.md` into the board's `BRAIN.md`.
 3. Write `state/setup.json` as step 2 item 7 of `setup.md` says, with `welcomed: true` and every step the board already has as `done`, and set it as the board document `setup/state`.
+
+### The setup questions about your tools (2026-11-23)
+
+This version changes only how a new board is set up: two new questions (which tools the person uses, and where new tasks reach them), meeting notes from more places, and defaults for personal use. A board that already exists keeps working as it is, and its missing answers are read as work use with Google Calendar, Gmail, Gemini notes by mail and Slack. On the owner's yes:
+
+1. Copy the kit's `setup.md`, `job/job-template.md` and `board/brain-template.md` into `docs/kit/` in the board folder, so later Setup steps follow the new questions.
+2. Add a "Systems:" line under "What the board is for" in the board's `BRAIN.md`, filled as step 2 item 3 of `setup.md` says for `{{SYSTEMS}}`. Ask question 19 for it when the owner wants; otherwise write "Other task sources: not asked".
