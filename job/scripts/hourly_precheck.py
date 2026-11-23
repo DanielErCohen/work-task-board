@@ -17,7 +17,7 @@ Three more keys of board.config.json are read here: "sweeps" (false when neither
 The config file is looked for in this order: --config <path>, the BOARD_CONFIG environment variable, the
 current folder, then the folder of this script and its parents.
 """
-import json, os, sys, time
+import json, os, sys, tempfile, time
 from datetime import date, datetime, timedelta, timezone
 from pathlib import Path
 
@@ -33,7 +33,7 @@ def config():
     if not path or not path.exists():
         sys.exit("No board.config.json found. Run from the folder that holds it, or pass --config <path>.")
     try:
-        cfg = json.loads(path.read_text())
+        cfg = json.loads(path.read_text(encoding="utf-8-sig"))
     except ValueError:
         print(f"{path}: not valid JSON", file=sys.stderr)
         sys.exit(2)
@@ -55,16 +55,36 @@ SWEEP_HOURS = tuple(_HOURS) if CFG.get("sweeps", True) else ()
 
 def load(path, default):
     try:
-        return json.loads(path.read_text())
+        value = json.loads(path.read_text(encoding="utf-8-sig"))
     except (OSError, ValueError):
         return default
+    return value if default is None or isinstance(value, type(default)) else default
 
 
 def parse(ts):
+    """An ISO time as an aware datetime; a time written without a zone is read as UTC."""
     try:
-        return datetime.fromisoformat(ts)
+        d = datetime.fromisoformat(ts)
     except (TypeError, ValueError):
         return None
+    return d if d.tzinfo else d.replace(tzinfo=timezone.utc)
+
+
+def write_atomic(path, text):
+    """Write a temp file in the same folder, then replace `path`: a crash never leaves a half-written file."""
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=path.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as f:
+            f.write(text.encode("utf-8"))
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, str(path))
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
 
 def sweep_state(run):
@@ -93,17 +113,34 @@ def start():
     except FileExistsError:
         print("BUSY")
         return
-    with os.fdopen(fd, "w") as f:
+    with os.fdopen(fd, "w", encoding="utf-8") as f:
         f.write(datetime.now(timezone.utc).isoformat())
+    try:
+        info = run_start()
+    except BaseException:   # a failure after the lock was taken must not leave the lock behind
+        LOCK.unlink(missing_ok=True)
+        raise
+    print(json.dumps(info, indent=1))
+
+
+def run_start():
     run = load(RUN, {})
+    if not isinstance(run, dict):
+        run = {}
     today = date.today().isoformat()
     last = run.get("last_run_date") or (date.today() - timedelta(days=1)).isoformat()
-    queue = [load(f, {}) for f in sorted((STATE / "confirm-queue").glob("*.json"))]
+    queue = []
+    for f in sorted((STATE / "confirm-queue").glob("*.json")):
+        q = load(f, None)
+        if isinstance(q, dict):
+            queue.append(q)
+        else:
+            print(f"skipped {f.name}: not a JSON object", file=sys.stderr)
     sweep_due, since = sweep_state(run)
     waiting = parse(run.get("board_write_waiting_since"))
     if waiting and time.time() - waiting.timestamp() > BOARD_WAIT_SECONDS:
         waiting = None
-    print(json.dumps({
+    return {
         "today": today,
         "first_run_today": run.get("last_run_date") != today,
         "notes_after": last.replace("-", "/"),
@@ -116,7 +153,7 @@ def start():
         "board_write_waiting_since": waiting.isoformat(timespec="seconds") if waiting else None,
         # The weekly review is due on the first run of a week that has none yet.
         "review_due": bool(CFG.get("weekly_review", True)) and run.get("review_week") != iso_week(),
-    }, indent=1))
+    }
 
 
 def keep_lock():
@@ -138,9 +175,17 @@ def seen(ids):
 def filed(source_id, note_file):
     keep_lock()
     STATE.mkdir(parents=True, exist_ok=True)
-    processed = load(STATE / "processed.json", {})
+    pfile = STATE / "processed.json"
+    processed = {}
+    if pfile.exists():
+        try:
+            processed = json.loads(pfile.read_text(encoding="utf-8-sig"))
+        except (OSError, ValueError):
+            processed = None
+    if not isinstance(processed, dict):
+        sys.exit(f"{pfile} is corrupt (not a JSON object); nothing was recorded. Fix or remove it and run again.")
     processed[source_id] = {"file": note_file, "filedAt": datetime.now(timezone.utc).isoformat(timespec="seconds")}
-    (STATE / "processed.json").write_text(json.dumps(processed, indent=1) + "\n")
+    write_atomic(pfile, json.dumps(processed, indent=1) + "\n")
     print("recorded " + source_id)
 
 
@@ -149,11 +194,11 @@ def finish(brief_written, swept=False, review=False):
     run = load(RUN, {})
     began = None
     try:
-        began = parse(LOCK.read_text().strip())
+        began = parse(LOCK.read_text(encoding="utf-8-sig").strip())
     except OSError:
         pass
     seconds = round((datetime.now(timezone.utc) - began).total_seconds()) if began else None
-    with (STATE / "run-log.jsonl").open("a") as log:
+    with (STATE / "run-log.jsonl").open("a", encoding="utf-8") as log:
         log.write(json.dumps({"at": datetime.now(timezone.utc).isoformat(timespec="seconds"), "seconds": seconds,
                               "brief": bool(brief_written), "sweep": bool(swept), "review": bool(review)}) + "\n")
     if review:
@@ -164,7 +209,7 @@ def finish(brief_written, swept=False, review=False):
         run["brief_date"] = today
     if swept:
         run["last_sweep_at"] = datetime.now(timezone.utc).isoformat()
-    RUN.write_text(json.dumps(run, indent=1) + "\n")
+    write_atomic(RUN, json.dumps(run, indent=1) + "\n")
     LOCK.unlink(missing_ok=True)
     print("finished")
 
@@ -177,7 +222,7 @@ def board(waiting):
         run["board_write_waiting_since"] = datetime.now(timezone.utc).isoformat()
     else:
         run.pop("board_write_waiting_since", None)
-    RUN.write_text(json.dumps(run, indent=1) + "\n")
+    write_atomic(RUN, json.dumps(run, indent=1) + "\n")
     print("board write waiting" if waiting else "board write done")
 
 

@@ -6,7 +6,7 @@
 The sample was written for one invented day (the date in sample/state/brief-today.json). The page shows a
 brief only on its own day, so this script moves every date in the copy by the same number of days: task
 dates, note dates, card dates, the brief and the meeting file names. --date picks another target day than
-today; --no-shift copies the files as they are. The destination must not already hold a tasks.md.
+today; --no-shift copies the files as they are. The destination must not already hold a tasks.md, summaries, cards, files in meetings/ or a state/brief-today.json.
 """
 import json, re, shutil, subprocess, sys
 from datetime import date, timedelta
@@ -36,7 +36,12 @@ def copy_sample(dest, target=None, shift=True):
         there = dest / name
         if there.is_file() or (there.is_dir() and any(there.iterdir())):
             sys.exit(f"{dest} already holds {name}; nothing was copied. The sample goes into a board folder that has no tasks yet.")
-    base = date.fromisoformat(json.loads((SAMPLE / "state" / "brief-today.json").read_text())["date"])
+    meetings = dest / "meetings"
+    if meetings.is_dir() and any(meetings.iterdir()):
+        sys.exit(f"{dest} already holds files in meetings/; nothing was copied. The sample would mix with your notes.")
+    if (dest / "state" / "brief-today.json").exists():
+        sys.exit(f"{dest} already holds state/brief-today.json; nothing was copied. The sample would replace your brief.")
+    base = date.fromisoformat(json.loads((SAMPLE / "state" / "brief-today.json").read_text(encoding="utf-8-sig"))["date"])
     days = ((target or date.today()) - base).days if shift else 0
     move = shifter(days)
     for src in sorted(SAMPLE.rglob("*")):
@@ -52,7 +57,7 @@ def copy_sample(dest, target=None, shift=True):
         if src.name == "setup.json":
             continue   # the sample's own setup state; a real board writes its own
         out.parent.mkdir(parents=True, exist_ok=True)
-        out.write_text(move(src.read_text()))
+        out.write_bytes((move(src.read_text(encoding="utf-8-sig"))).encode("utf-8"))
     if days:  # the notes changed, so record again that each summary matches its notes
         ids = sorted(p.stem for p in (dest / "summaries").glob("T*.json"))
         subprocess.run([sys.executable, str(KIT / "board" / "sync_tasks.py"), "--config", str(dest / "board.config.json"), "stamp", *ids],

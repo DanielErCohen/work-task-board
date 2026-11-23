@@ -35,7 +35,7 @@ A board edit is a document with `dirty: true` and `editedFields`, the list of fi
 Import applies only those fields of only those documents, so text written to tasks.md in the meantime
 (a note the hourly job added) is kept. Lines that are not task rows keep their place in the file.
 """
-import hashlib, json, os, re, sys
+import hashlib, json, os, re, shutil, sys, tempfile
 from datetime import date
 from pathlib import Path
 
@@ -95,7 +95,7 @@ def configure(argv):
         if not cfg_path.exists():
             sys.exit(f"config file not found: {cfg_path}")
         try:
-            CFG = json.loads(cfg_path.read_text())
+            CFG = json.loads(cfg_path.read_text(encoding="utf-8-sig"))
         except ValueError:
             print(f"{cfg_path}: not valid JSON", file=sys.stderr)
             sys.exit(2)
@@ -139,20 +139,51 @@ def notes_hash(notes):
 def load_summary(tid):
     p = SUMMARIES / f"{tid}.json"
     try:
-        return json.loads(p.read_text()) if p.exists() else {}
+        return json.loads(p.read_text(encoding="utf-8-sig")) if p.exists() else {}
     except ValueError:
         return {}
 
 
+def write_atomic(path, data):
+    """Write bytes to a temp file in the same folder, then replace `path` with it: a crash never leaves a half-written file."""
+    path = Path(path)
+    fd, tmp = tempfile.mkstemp(dir=str(path.parent), prefix=path.name + ".", suffix=".tmp")
+    try:
+        with os.fdopen(fd, "wb") as f:
+            f.write(data)
+            f.flush()
+            os.fsync(f.fileno())
+        os.replace(tmp, str(path))
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
+
+
 def save_summary(tid, s):
     SUMMARIES.mkdir(parents=True, exist_ok=True)
-    (SUMMARIES / f"{tid}.json").write_text(json.dumps(s, ensure_ascii=False, indent=1) + "\n")
+    write_atomic(SUMMARIES / f"{tid}.json", (json.dumps(s, ensure_ascii=False, indent=1) + "\n").encode("utf-8"))
 
 
 def split_owner(notes):
     """Return (raci, poc, notes without the two leading markers)."""
     m = OWNER_RE.match(notes)
     return (m.group(1) or "").replace(" ", "").replace(",", ", "), (m.group(2) or "").strip(), notes[m.end():]
+
+
+ABBREV = {"dr", "mr", "mrs", "ms", "prof", "jr", "sr", "st", "inc", "ltd", "co", "corp"}
+
+
+def poc_has_full_stop(notes):
+    """True when the POC marker was cut at a full stop that belongs to the name ("POC: Dr. Jane Smith." or "POC: J. Smith.")."""
+    _, poc, body = split_owner(notes)
+    if not poc:
+        return False
+    last = poc.split()[-1].lower()
+    cut = len(last) == 1 or last in ABBREV
+    return cut and bool(re.match(r"^[A-Z][A-Za-z'-]*\b(?!:)", body.lstrip()))
 
 
 def owner_prefix(raci, poc):
@@ -163,7 +194,7 @@ def owner_prefix(raci, poc):
 
 def read_rows():
     """Return (lines, rows). `lines` is the whole file; a row is a dict plus 'line' (its index in lines)."""
-    lines = TASKS.read_text().split("\n")
+    lines = TASKS.read_text(encoding="utf-8-sig").split("\n")
     rows = []
     for i, line in enumerate(lines):
         if ROW_RE.match(line) and line.rstrip().endswith("|"):
@@ -253,10 +284,13 @@ def check():
     anything, so a malformed row (a note written into the due cell, a pipe inside a cell) never
     reaches the board."""
     problems, seen = [], set()
-    all_lines = TASKS.read_text().split("\n")
+    all_lines = TASKS.read_text(encoding="utf-8-sig").split("\n")
     for n, first in stray_table_lines(all_lines):
         problems.append(f"line {n}: '{first[:40]}' is not a task ID (T and digits), so this line of the table is ignored")
     for n, line in enumerate(all_lines, 1):
+        if not line.startswith("|") and re.match(r"^\s+\|\s*T\d+\s*\|", line):
+            problems.append(f"line {n}: the row starts with a space or tab, so it would be ignored; remove the leading whitespace")
+            continue
         if not ROW_RE.match(line):
             continue
         cells = split_cells(line)
@@ -285,6 +319,8 @@ def check():
         for k in ("opened", "lastChanged"):
             if not is_day(r[k]):
                 problems.append(f"line {n} {tid}: {k} is '{r[k][:40]}', expected YYYY-MM-DD")
+        if poc_has_full_stop(r["notes"]):
+            problems.append(f"line {n} {tid}: the POC in the notes contains a full stop (an initial or an abbreviation); write the name without full stops, for example 'Dr Jane Smith'")
     return problems
 
 
@@ -301,8 +337,13 @@ def export():
     check_or_exit("nothing was exported")
     _, rows = read_rows()
     idx = index_files()
-    if OUT.resolve() == ROOT.resolve() or (OUT / "board.config.json").exists():
-        sys.exit(f"export refused: {OUT} is the board folder or holds board.config.json")
+    state_dir = (ROOT / CFG.get("state", "state")).resolve()
+    if OUT.resolve() in (ROOT.resolve(), SUMMARIES.resolve(), state_dir) or (OUT / "board.config.json").exists():
+        sys.exit(f"export refused: {OUT} is the board folder, the summaries folder, the state folder or holds board.config.json")
+    if OUT.is_dir():
+        other = sorted(p.name for p in OUT.iterdir() if not p.name.startswith(".") and not re.fullmatch(r"T\d+\.json", p.name))
+        if other:
+            sys.exit(f"export refused: {OUT} holds files that are not exported tasks ({', '.join(other[:5])}); use an empty folder")
     OUT.mkdir(parents=True, exist_ok=True)
     for f in OUT.glob("T*.json"):
         if re.fullmatch(r"T\d+\.json", f.name):
@@ -325,7 +366,7 @@ def export():
         doc["dirty"] = False
         doc["editedFields"] = []
         doc["syncedAt"] = date.today().isoformat()
-        (OUT / f"{r['id']}.json").write_text(json.dumps(doc, ensure_ascii=False, indent=1))
+        write_atomic(OUT / f"{r['id']}.json", json.dumps(doc, ensure_ascii=False, indent=1).encode("utf-8"))
     print(f"exported {len(rows)} tasks to {OUT}")
 
 
@@ -342,12 +383,14 @@ def row_text(r):
 
 def import_(src):
     check_or_exit("nothing was imported")  # a malformed row would not be recognised below
+    if not Path(src).is_dir():
+        sys.exit(f"import folder not found: {src}. Nothing was imported.")
     lines, rows = read_rows()
     by_id = {r["id"]: r for r in rows}
     edits = []
     for f in sorted(Path(src).rglob("*.json")):
         try:
-            d = json.loads(f.read_text())
+            d = json.loads(f.read_text(encoding="utf-8-sig"))
         except ValueError:
             print(f"skipped {f.name}: not valid JSON")
             continue
@@ -359,15 +402,23 @@ def import_(src):
             edits.append(d)
     today = date.today().isoformat()
     closed = closed_statuses()
-    changed, new_rows, clear, rejected = [], [], [], []
+    changed, new_rows, clear, rejected, skipped = [], [], [], [], []
     next_n = max([int(r["id"][1:]) for r in rows] or [0]) + 1
     for d in edits:
         tid = d.get("id")
         if not re.fullmatch(r"T[0-9]+", str(tid or "")):
             print(f"skipped a document without a task id: {str(tid)[:40]}")
             continue
-        clear.append(tid)
         r = by_id.get(tid)
+        if r is None and not d.get("isNew"):
+            print(f"skipped {tid}: the page edited a task that is not in tasks.md and is not marked new, so it is not recreated")
+            skipped.append(tid)
+            continue
+        if (r is None or d.get("isNew")) and not cell(d.get("title")):
+            print(f"skipped {tid}: a new task with an empty title is not imported; the page keeps it marked as not in tasks.md")
+            skipped.append(tid)
+            continue
+        clear.append(tid)
         if r is not None and d.get("isNew") and cell(d.get("title")) != r["title"]:
             # A task created on the page took an id that a row written here in the meantime already has.
             fresh = "T" + str(next_n).zfill(3)
@@ -393,6 +444,10 @@ def import_(src):
             if not wants(k):
                 continue
             v = cell(d[k])
+            if k == "title" and not v:
+                print(f"not applied: {tid} title is empty; kept '{r[k]}'")
+                rejected.append(tid)
+                continue
             if k in ("due", "closed") and v and not is_day(v):
                 print(f"not applied: {tid} {k} '{v[:40]}' is not a date; kept '{r[k]}'")
                 rejected.append(tid)
@@ -441,8 +496,11 @@ def import_(src):
             at = max((i for i, line in enumerate(lines) if line.startswith("|")), default=len(lines) - 1)
         lines[at + 1:at + 1] = [row_text(r) for r in sorted(new_rows, key=lambda r: int(r["id"][1:]))]
     if changed:
-        TASKS.write_text("\n".join(lines))
+        shutil.copyfile(str(TASKS), str(TASKS.with_name(TASKS.name + ".bak")))   # one-file backup of the table before this write
+        write_atomic(TASKS, "\n".join(lines).encode("utf-8"))
     print("updated: " + (", ".join(changed) if changed else "none"))
+    if skipped:
+        print("documents skipped, still dirty on the board (fix them there): " + ", ".join(sorted(set(skipped))))
     if rejected:
         print("edits not applied (the next push overwrites them on the board; tell the owner): " + ", ".join(sorted(set(rejected))))
     print("clear dirty on (push each of these to the board): " + (", ".join(clear) or "none"))
@@ -485,7 +543,7 @@ def plan(src):
     board = {}
     for f in Path(src).rglob("*.json"):
         try:
-            d = json.loads(f.read_text())
+            d = json.loads(f.read_text(encoding="utf-8-sig"))
         except ValueError:
             print(f"skipped {f.name}: not valid JSON")
             continue
@@ -496,7 +554,7 @@ def plan(src):
     defaults = {"raci": "", "poc": "", "description": "", "decision": None, "details": [], "summaryStale": False}
     new, changed = [], []
     for f in sorted(OUT.glob("*.json")):
-        d = json.loads(f.read_text())
+        d = json.loads(f.read_text(encoding="utf-8-sig"))
         b = board.get(d["id"])
         if b is None:
             new.append(d["id"])
@@ -506,6 +564,9 @@ def plan(src):
         if mine != theirs:
             changed.append(d["id"])
     gone = sorted(set(board) - {f.stem for f in OUT.glob("*.json")})
+    unimported = sorted(i for i, b in board.items() if b.get("dirty") or b.get("editedFields"))
+    for i in unimported:
+        print(f"warning: {i} has a page edit that is not in tasks.md yet (dirty or editedFields). Run import first; pushing the export now would overwrite it.")
     print("new: " + (", ".join(new) or "none"))
     print("changed: " + (", ".join(changed) or "none"))
     print("on board only: " + (", ".join(gone) or "none"))

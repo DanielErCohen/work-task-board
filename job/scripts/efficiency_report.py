@@ -19,7 +19,7 @@ def state_dir():
     if not path or not path.exists():
         sys.exit("No board.config.json found. Run from the folder that holds it, or pass --config <path>.")
     try:
-        cfg = json.loads(path.read_text())
+        cfg = json.loads(path.read_text(encoding="utf-8-sig"))
     except ValueError:
         print(f"{path}: not valid JSON", file=sys.stderr)
         sys.exit(2)
@@ -34,16 +34,30 @@ def parse(ts):
         return None
 
 
+def well_formed(card):
+    """A card the report can count: an object whose options are objects and whose text fields are strings."""
+    if not isinstance(card, dict):
+        return False
+    if not all(isinstance(card.get(k) or "", str) for k in ("origin", "lane", "answer", "choice", "comment", "state", "title")):
+        return False
+    opts = card.get("options")
+    return opts is None or (isinstance(opts, list) and all(isinstance(o, dict) for o in opts))
+
+
 def main(days):
     state = state_dir()
     now = datetime.now(timezone.utc)
     since = now - timedelta(days=days)
-    items = []
+    items, skipped_cards = [], 0
     for f in sorted((state / "confirm-queue").glob("*.json")):
         try:
-            items.append(json.loads(f.read_text()))
+            card = json.loads(f.read_text(encoding="utf-8-sig"))
         except (OSError, ValueError):
-            pass
+            card = None
+        if well_formed(card):
+            items.append(card)
+        else:
+            skipped_cards += 1
     recent = [i for i in items if (parse(i.get("createdAt")) or now) >= since]
     answered = [i for i in recent if i.get("answer")]
     prepared = [i for i in recent if i.get("prepared") or i.get("options") or i.get("visual")]
@@ -57,14 +71,23 @@ def main(days):
 
     hours = [(parse(i.get("answeredAt")) - parse(i.get("createdAt"))).total_seconds() / 3600
              for i in answered if parse(i.get("answeredAt")) and parse(i.get("createdAt"))]
-    runs = []
+    runs, skipped_lines = [], 0
     try:
-        for line in (state / "run-log.jsonl").read_text().splitlines():
+        lines = (state / "run-log.jsonl").read_text(encoding="utf-8-sig").splitlines()
+    except OSError:
+        lines = []
+    for line in lines:
+        if not line.strip():
+            continue
+        try:
             r = json.loads(line)
-            if (parse(r.get("at")) or now) >= since:
-                runs.append(r)
-    except (OSError, ValueError):
-        pass
+        except ValueError:
+            r = None
+        if not isinstance(r, dict):
+            skipped_lines += 1
+            continue
+        if (parse(r.get("at")) or now) >= since:
+            runs.append(r)
     secs = [r["seconds"] for r in runs if isinstance(r.get("seconds"), (int, float))]
     by = lambda key: {k: sum(1 for i in recent if (i.get(key) or "none") == k) for k in sorted({(i.get(key) or "none") for i in recent})}
     print(json.dumps({
@@ -84,6 +107,8 @@ def main(days):
         "open_older_than_3_days": [i.get("title") for i in items if i.get("state") == "open" and (parse(i.get("createdAt")) or now) < now - timedelta(days=3)],
         "median_hours_to_answer": round(statistics.median(hours), 1) if hours else None,
         "runs": len(runs),
+        "cards_skipped_as_malformed": skipped_cards,
+        "run_log_lines_skipped": skipped_lines,
         "runs_with_work_over_60s": sum(1 for x in secs if x > 60),
         "run_seconds_total": sum(secs),
         "run_seconds_median": statistics.median(secs) if secs else None,

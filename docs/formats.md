@@ -220,3 +220,5 @@ A page edit reaches `tasks.md` through `sync_tasks.py import`. It applies only d
 1. Pull the page's edits: query the `tasks` collection for documents with `dirty == true`, save them to a scratch folder, and run `python3 board/sync_tasks.py import <that folder>`.
 2. Push `tasks.md`: run `python3 board/sync_tasks.py export`, list the `tasks` collection to a scratch folder, run `python3 board/sync_tasks.py plan <that folder>`, and write every task it lists as new or changed, plus every ID import printed after "clear dirty on", from `board/out/docs/` to the board.
 3. Say how many tasks came from the page and how many went to it.
+
+Before each write, `import` keeps the previous `tasks.md` as `tasks.md.bak` next to it; to undo an import, copy that file back. `plan` warns about a task whose page edit has not been imported yet: run step 1 first, or that edit is overwritten. `import` skips, and reports, a page edit that would leave a task without a title, and a page document for a task that is no longer in `tasks.md`.

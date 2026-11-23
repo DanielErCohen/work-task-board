@@ -1,0 +1,31 @@
+name: Something did not work
+description: The setup, the page, the hourly job or a script did not do what the kit says.
+body:
+  - type: markdown
+    attributes:
+      value: "Please leave out your own tasks, names and mail. For a security problem, use Security, then Report a vulnerability, instead of an issue."
+  - type: input
+    id: where
+    attributes:
+      label: Where it happened
+      description: "For example: setup, question 18; the page, Setup panel; the hourly job's first run; sync_tasks.py check"
+    validations:
+      required: true
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what you expected
+    validations:
+      required: true
+  - type: dropdown
+    id: os
+    attributes:
+      label: Computer
+      options: [Mac, Windows, Linux]
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: Kit version
+      description: "The release name, or the date of the newest entry in versions-and-tests.md"

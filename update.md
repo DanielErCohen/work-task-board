@@ -120,3 +120,12 @@ This version changes only how a new board is set up: two new questions (which to
 
 1. Copy the kit's `setup.md`, `job/job-template.md` and `board/brain-template.md` into `docs/kit/` in the board folder, so later Setup steps follow the new questions.
 2. Add a "Systems:" line under "What the board is for" in the board's `BRAIN.md`, filled as step 2 item 3 of `setup.md` says for `{{SYSTEMS}}`. Ask question 19 for it when the owner wants; otherwise write "Other task sources: not asked".
+
+### Safer scripts and a sturdier page (2026-11-23, release 1.0.0)
+
+The scripts and the page changed; the formats did not. On the owner's yes:
+
+1. Copy the kit's `board/sync_tasks.py`, `job/scripts/hourly_precheck.py` and `job/scripts/efficiency_report.py` over the board folder's copies, and `tools/preview.py` and `tools/load_sample.py` into its `tools/` when it has them.
+2. Publish the kit's `board/tasks-board.html` as step 2 of this file says, keeping the board's own config block.
+3. Copy the kit's `setup.md` and `job/job-template.md` into `docs/kit/`. In a board folder inside a git repository, add `tasks.md.bak` to its `.gitignore`.
+4. Run `python3 board/sync_tasks.py check`. It is stricter now: a row that starts with a space, and a POC name with a full stop (`POC: J. Smith.`), fail it. Fix what it lists (remove the space; write the name without full stops) and run it again until it passes.
